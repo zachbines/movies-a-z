@@ -119,5 +119,16 @@ function displayPoster(jsonResult) {
   console.log(jsonResult);
 }
 
+function displayUserPoster(jsonResult) {
+  movieApp.posterContainer = document.createElement('div.img-container')
+  movieApp.poster = document.createElement('img');
+  // const para = document.querySelector('p');
+  poster.src = jsonResult.Poster;
+  // console.log(jsonResult.Poster);
+  // para.appendChild(poster);
+  console.log(jsonResult);
+}
+displayUserPoster();
+
 
 movieApp.init();
