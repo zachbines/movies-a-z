@@ -17,11 +17,57 @@ console.log(movieApp.startButton);
 movieApp.startButton.addEventListener('click', function(){
   console.log('boop');
   // RETURN VALUES:
-    // Poster url to give us image
-    // Title of the movie
-    // Plot text content
-  // printGivenPoster();
+  // Poster url to give us image
+  // Title of the movie
+  // Plot text content
+  
+  const info = movieApp.getMovieInfo(movieApp.getMovieName());
+  console.log(info);
 })
+
+// (1) NAMESPACE VARIABLES GLOBAL SCOPE
+const url = new URL('http://www.omdbapi.com/');
+const key = 'ba8abefc';
+const favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Old Boy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity"];
+// use this to filter what the user can search for (naughty naughty)
+const forbiddenGenre = "Adult";
+
+// THIS WILL BE THE FUNCTION THAT WILL PRINT THE INITIAL MOVIE POSTER (using the array of movie titles we've created)
+
+movieApp.getMovieName = () => {
+  let i = 0;
+  const currentMovieTitle = favMovies[i];
+  // const info = movieApp.getMovieInfo(currentMovieTitle);
+  // console.log(info);
+  return currentMovieTitle;
+}
+
+// (2) GET MOVIE POSTER
+movieApp.getMovieInfo = (title, imdbCode) => {
+
+  url.search = new URLSearchParams({
+    apikey: key,
+    t: title,
+    i: imdbCode,
+    type: 'movie'
+  })
+
+  fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((jsonResult) => {
+      // console.log(jsonResult.Genre); 
+      if (jsonResult.Genre === forbiddenGenre) {
+        console.log('naughty naughty');
+      } else {
+        console.log('It worked!', jsonResult);
+        return jsonResult;
+      }
+    })
+
+}
+
 
 //      on topbutton click:
 // clear html to repopulate the section
@@ -43,45 +89,6 @@ movieApp.startButton.addEventListener('click', function(){
 //     topbutton reappears to restart the game
 
 
-// (1) NAMESPACE VARIABLES GLOBAL SCOPE
-const url = new URL('http://www.omdbapi.com/');
-const key = 'ba8abefc';
-const favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Old Boy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity"];
-// use this to filter what the user can search for (naughty naughty)
-const forbiddenGenre = "Adult"; 
-
-
-// (2) GET MOVIE POSTER
-const getMovieInfo = (title, imdbCode) => {
-  url.search = new URLSearchParams({
-    apikey: key,
-    t: title,
-    i: imdbCode,
-    type: 'movie'
-  })
-  // console.log(url);
-
-  fetch(url)
-    .then((response) => {
-      return response.json();
-    })
-    .then((jsonResult) => {
-      // console.log(jsonResult.Genre); 
-      if (jsonResult.Genre === forbiddenGenre) {
-        console.log('naughty naughty');
-      } else {
-        console.log('It worked!', jsonResult);
-        // displayPoster(jsonResult);
-      }
-    })
-}
-
-// THIS WILL BE THE FUNTION THAT WILL PRINT THE INITIAL MOVIE POSTER (using the array of movie titles we've created)
-const getMovieName = () => {
-  let i = 0;
-  const currentMovieTitle = favMovies[i]
-  getMovieInfo(currentMovieTitle);
-}
 
 
 
@@ -109,26 +116,26 @@ const getMovieName = () => {
 
 
 
-// DISPLAY POSTER FUNCTION
-function displayPoster(jsonResult) {
-  // const poster = document.createElement('img');
-  // const para = document.querySelector('p');
-  // poster.src = jsonResult.Poster;
-  // console.log(jsonResult.Poster);
-  // para.appendChild(poster);
-  console.log(jsonResult);
-}
+// // DISPLAY POSTER FUNCTION
+// function displayPoster(jsonResult) {
+//   // const poster = document.createElement('img');
+//   // const para = document.querySelector('p');
+//   // poster.src = jsonResult.Poster;
+//   // console.log(jsonResult.Poster);
+//   // para.appendChild(poster);
+//   console.log(jsonResult);
+// }
 
-function displayUserPoster(jsonResult) {
-  movieApp.posterContainer = document.createElement('div.img-container')
-  movieApp.poster = document.createElement('img');
-  // const para = document.querySelector('p');
-  poster.src = jsonResult.Poster;
-  // console.log(jsonResult.Poster);
-  // para.appendChild(poster);
-  console.log(jsonResult);
-}
-displayUserPoster();
+// function displayUserPoster(jsonResult) {
+//   movieApp.posterContainer = document.createElement('div.img-container')
+//   movieApp.poster = document.createElement('img');
+//   // const para = document.querySelector('p');
+//   poster.src = jsonResult.Poster;
+//   // console.log(jsonResult.Poster);
+//   // para.appendChild(poster);
+//   console.log(jsonResult);
+// }
+// displayUserPoster();
 
 
-movieApp.init();
+// movieApp.init();
