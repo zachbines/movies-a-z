@@ -3,10 +3,25 @@ const movieApp = {};
 // Create init function/call at the bottom of the page.
 movieApp.init = () => {
   console.log("this is the init function")
+  
 }
 // Cache existing html selectors we will need for appending
+movieApp.defaultMovieSelection = document.querySelector('.default-movie');
+movieApp.userMovieSelection = document.querySelector('.user-movie');
+movieApp.startButton = document.querySelector('.start-button')
+console.log(movieApp.defaultMovieSelection);
+console.log(movieApp.userMovieSelection);
+console.log(movieApp.startButton);
 
-//  create a variable that is able to generate a a random number which later represents a movies imdbID#.we will use this to display a random movie poster
+// Add event listener to submit button
+movieApp.startButton.addEventListener('click', function(){
+  console.log('boop');
+  // RETURN VALUES:
+    // Poster url to give us image
+    // Title of the movie
+    // Plot text content
+  // printGivenPoster();
+})
 
 //      on topbutton click:
 // clear html to repopulate the section
@@ -37,7 +52,7 @@ const forbiddenGenre = "Adult";
 
 
 // (2) GET MOVIE POSTER
-const getMoviePoster = (title, imdbCode) => {
+const getMovieInfo = (title, imdbCode) => {
   url.search = new URLSearchParams({
     apikey: key,
     t: title,
@@ -62,12 +77,12 @@ const getMoviePoster = (title, imdbCode) => {
 }
 
 // THIS WILL BE THE FUNTION THAT WILL PRINT THE INITIAL MOVIE POSTER (using the array of movie titles we've created)
-const printGivenPoster = () => {
+const getMovieName = () => {
   let i = 0;
-  const currentPoster = favMovies[i]
-  getMoviePoster(currentPoster);
+  const currentMovieTitle = favMovies[i]
+  getMovieInfo(currentMovieTitle);
 }
-// printGivenPoster();
+
 
 
 // (3) GENERATE imdbID#

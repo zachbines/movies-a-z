@@ -44,3 +44,7 @@ button {
     border: 10px dotted goldenrod;
 }
 
+footer {
+    position: absolute;
+    bottom: 0;
+}
