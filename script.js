@@ -23,6 +23,8 @@ movieApp.startButton.addEventListener('click', function(){
   const currentMovie = movieApp.getMovieTitle();
   // console.log(currentMovie);
   movieApp.getMovieInfo(currentMovie); //calls the API using the currentMovie name from our array
+  // hides button upon game initiation 
+  this.classList.add('hide');
 })
 
 // (1) NAMESPACE VARIABLES GLOBAL SCOPE
