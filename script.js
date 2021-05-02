@@ -1,37 +1,43 @@
 //   Make namespace object
-const movieApp = {}; 
+const app = {}; 
 // Create init function/call at the bottom of the page.
-movieApp.init = () => {
+app.init = () => {
   console.log("this is the init function")
-  
+  app.pageLoadEvent();
+  app.userInputEvent();
 }
 // Cache existing html selectors we will need for appending
-movieApp.defaultMovieSelection = document.querySelector('.default-movie');
-movieApp.userMovieSelection = document.querySelector('.user-movie');
-movieApp.startButton = document.querySelector('.start-button')
-movieApp.form = document.querySelector('form');
-movieApp.userInput = document.querySelector('input');
+app.defaultMovieSelection = document.querySelector('.default-movie');
+app.userMovieSelection = document.querySelector('.user-movie');
+app.startButton = document.querySelector('.start-button')
+app.form = document.querySelector('form');
+app.userInput = document.querySelector('input');
 
 // EVENT LISTENERS
 
-// Add event listener to submit button
-movieApp.startButton.addEventListener('click', function(){
-  console.log('boop');
-  const currentMovie = movieApp.getMovieTitle();
-  // console.log(currentMovie);
-  movieApp.getMovieInfo(currentMovie); //calls the API using the currentMovie name from our array
-  // hides button upon game initiation 
-  this.classList.add('hide');
-  movieApp.form.classList.remove('hide');
-})
+// Adds event listener to FIRST SUBMIT BUTTON when page first loads
+app.pageLoadEvent = () => {
+  app.startButton.addEventListener('click', function(){
+    console.log('boop');
+    const currentMovie = app.getDefaultMovieTitle();
+    // console.log(currentMovie);
+    app.getMovieInfo(currentMovie); //calls the API using the currentMovie name from our array
+    // hides button upon game initiation 
+    this.classList.add('hide');
+    app.form.classList.remove('hide');
+  })
+}
 
-movieApp.form.addEventListener('submit', function(event) {
-  event.preventDefault();
-
-  const userChoice = movieApp.userInput.value;
-  // console.log()
-  movieApp.getMovieInfo(userChoice);
-})
+// Adds event listener to when SECOND SUBMIT BUTTON is pressed with USER MOVIE INPUT value
+app.userInputEvent = () => {
+  app.form.addEventListener('submit', function(event) {
+    event.preventDefault();
+  
+    const userChoice = app.userInput.value;
+    // console.log()
+    app.getMovieInfo(userChoice);
+  })
+}
 
 
 
@@ -40,26 +46,23 @@ movieApp.form.addEventListener('submit', function(event) {
 const url = new URL('http://www.omdbapi.com/');
 const key = 'ba8abefc';
 const favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Old Boy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity"];
-// use this to filter what the user can search for (naughty naughty)
-const forbiddenGenre = "Adult";
 
 // THIS WILL BE THE FUNCTION THAT WILL PRINT THE INITIAL MOVIE POSTER (using the array of movie titles we've created)
 
 // GET MOVIE TITLE
-movieApp.getMovieTitle = () => {
+// THIS FUNCTION RETURNS FIRST MOVIE FROM ARRAY
+app.getDefaultMovieTitle = () => {
   let i = 0;
   const currentMovieTitle = favMovies[i];
-  // const info = movieApp.getMovieInfo(currentMovieTitle);
-  // console.log(info);
   return currentMovieTitle;
 }
-// (2) GET MOVIE POSTER
-movieApp.getMovieInfo = (title, imdbCode) => {
+
+// (2) GET MOVIE INFO
+app.getMovieInfo = (title) => {
 
   url.search = new URLSearchParams({
     apikey: key,
     t: title,
-    i: imdbCode,
     type: 'movie'
   })
 
@@ -69,20 +72,33 @@ movieApp.getMovieInfo = (title, imdbCode) => {
     })
     .then((currentMovieObj) => {
       // console.log(jsonResult.Genre); 
-      if (currentMovieObj.Genre === forbiddenGenre) {
+      if (currentMovieObj.Genre === "Adult") {
         console.log('naughty naughty');
-      } else {
-        console.log('It worked!', currentMovieObj);
-        // call the print function to 
-        movieApp.printMovieInfo(currentMovieObj, userChoice);
+      }
+      // } else if (currentMovieObj.Title === "Teen Wolf") {
+      //   console.log(currentMovieObj);
+      //   // call the print function
+      //   app.printMovieInfo(currentMovieObj);
+      // } else if (currentMovieObj.Title === app.userInput.value){
+
+      // }
+      switch (currentMovieObj.Title) {
+        case app.userInput:
+          app.printMovieInfo(currentMovieObj);
+          console.log("user choice");
+          break;
+        case "Teen Wolf":
+          app.printMovieInfo(currentMovieObj);
+          console.log("our choice");
+          break;
       }
     })
 }
 
-// right now this function is not reusable for printing the user movie in the right place. 
-movieApp.printMovieInfo = (currentMovieObj, printUserChoice) => {
+// THIS FUNCTION RETURNS RESULT FROM app.getMovieInfo and prints POSTER + TEXT elements into NEW POSTER and INFO CONTAINERS
+app.printMovieInfo = (currentMovieObj) => {
   //destructuring for readability
-  const { Title, Year, Plot, Poster } = currentMovieObj;
+  const { Title, Year, Plot, Poster, imdbRating } = currentMovieObj;
 
   const posterContainer = document.createElement('div');
   posterContainer.setAttribute('class', 'img-container')
@@ -97,16 +113,17 @@ movieApp.printMovieInfo = (currentMovieObj, printUserChoice) => {
   infoContainer.innerHTML =  `<h3>${Title}<span>${Year}</span></h3><p>${Plot}</p>`;
 
   // prints poster/info to the default movie section
-  movieApp.defaultMovieSelection.appendChild(posterContainer);
-  movieApp.defaultMovieSelection.appendChild(infoContainer);
+  app.defaultMovieSelection.appendChild(posterContainer);
+  app.defaultMovieSelection.appendChild(infoContainer);
+};
 
 // must figure out how to print user movie to user movie section
-  movieApp.userMovieSelection.appendChild(posterContainer);
-  movieApp.userMovieSelection.appendChild(infoContainer);
-
-}
+// app.userMovieSelection.appendChild(posterContainer);
+// app.userMovieSelection.appendChild(infoContainer);
 
 
+
+// NEED TWO VARIABLES FOR IMDB RATINGS
 
 //      on topbutton click:
 // clear html to repopulate the section
@@ -128,53 +145,4 @@ movieApp.printMovieInfo = (currentMovieObj, printUserChoice) => {
 //     topbutton reappears to restart the game
 
 
-
-
-
-// (3) GENERATE imdbID#
-// (3a) Create math.random function to generate a three digit # which will be used to randomize 3 digits within 7 digit imdbID
-// const generateMovieID = () => {
-//   const lastThreeDigits = Math.floor(Math.random() * (300) + 600); 
-//   return `tt0500${lastThreeDigits}`
-// }
-// console.log(generateMovieID());
-
-// getMoviePoster('', generateMovieID());
-
-// 3(b)
-// const generateMovieID = () => {
-//   const sixDigits = Math.floor(Math.random() * (10000) + 280000);
-//   return `tt0${sixDigits}`
-// }
-// console.log(generateMovieID());
-
-// getMoviePoster('', generateMovieID());
-
-// CREATE MATH.RANDOM FUNCTION TO SELECT MOVIE BASED ON imdbID#
-
-
-
-
-// // DISPLAY POSTER FUNCTION
-// function displayPoster(jsonResult) {
-//   // const poster = document.createElement('img');
-//   // const para = document.querySelector('p');
-//   // poster.src = jsonResult.Poster;
-//   // console.log(jsonResult.Poster);
-//   // para.appendChild(poster);
-//   console.log(jsonResult);
-// }
-
-// function displayUserPoster(jsonResult) {
-//   movieApp.posterContainer = document.createElement('div.img-container')
-//   movieApp.poster = document.createElement('img');
-//   // const para = document.querySelector('p');
-//   poster.src = jsonResult.Poster;
-//   // console.log(jsonResult.Poster);
-//   // para.appendChild(poster);
-//   console.log(jsonResult);
-// }
-// displayUserPoster();
-
-
-movieApp.init();
+app.init();
