@@ -9,23 +9,32 @@ movieApp.init = () => {
 movieApp.defaultMovieSelection = document.querySelector('.default-movie');
 movieApp.userMovieSelection = document.querySelector('.user-movie');
 movieApp.startButton = document.querySelector('.start-button')
-console.log(movieApp.defaultMovieSelection);
-console.log(movieApp.userMovieSelection);
-console.log(movieApp.startButton);
+movieApp.form = document.querySelector('form');
+movieApp.userInput = document.querySelector('input');
+
+// EVENT LISTENERS
 
 // Add event listener to submit button
 movieApp.startButton.addEventListener('click', function(){
   console.log('boop');
-  // RETURN VALUES:
-  // Poster url to give us image
-  // Title of the movie
-  // Plot text content
   const currentMovie = movieApp.getMovieTitle();
   // console.log(currentMovie);
   movieApp.getMovieInfo(currentMovie); //calls the API using the currentMovie name from our array
   // hides button upon game initiation 
   this.classList.add('hide');
+  movieApp.form.classList.remove('hide');
 })
+
+movieApp.form.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const userChoice = movieApp.userInput.value;
+  // console.log()
+  movieApp.getMovieInfo(userChoice);
+})
+
+
+
 
 // (1) NAMESPACE VARIABLES GLOBAL SCOPE
 const url = new URL('http://www.omdbapi.com/');
@@ -58,19 +67,20 @@ movieApp.getMovieInfo = (title, imdbCode) => {
     .then((response) => {
       return response.json();
     })
-    .then((jsonResult) => {
+    .then((currentMovieObj) => {
       // console.log(jsonResult.Genre); 
-      if (jsonResult.Genre === forbiddenGenre) {
+      if (currentMovieObj.Genre === forbiddenGenre) {
         console.log('naughty naughty');
       } else {
-        console.log('It worked!', jsonResult);
+        console.log('It worked!', currentMovieObj);
         // call the print function to 
-        movieApp.printMovieInfo(jsonResult);
+        movieApp.printMovieInfo(currentMovieObj, userChoice);
       }
     })
 }
 
-movieApp.printMovieInfo = (currentMovieObj) => {
+// right now this function is not reusable for printing the user movie in the right place. 
+movieApp.printMovieInfo = (currentMovieObj, printUserChoice) => {
   //destructuring for readability
   const { Title, Year, Plot, Poster } = currentMovieObj;
 
@@ -86,10 +96,14 @@ movieApp.printMovieInfo = (currentMovieObj) => {
   infoContainer.setAttribute('class', 'info-container');
   infoContainer.innerHTML =  `<h3>${Title}<span>${Year}</span></h3><p>${Plot}</p>`;
 
-
+  // prints poster/info to the default movie section
   movieApp.defaultMovieSelection.appendChild(posterContainer);
   movieApp.defaultMovieSelection.appendChild(infoContainer);
-  // console.log(currentMovieObj);
+
+// must figure out how to print user movie to user movie section
+  movieApp.userMovieSelection.appendChild(posterContainer);
+  movieApp.userMovieSelection.appendChild(infoContainer);
+
 }
 
 

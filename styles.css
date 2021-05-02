@@ -31,6 +31,11 @@ button {
     margin: 20px 0;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+}
+
 .game-window {
     display: flex;
     justify-content: space-evenly;
