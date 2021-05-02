@@ -3,6 +3,7 @@ const app = {};
 // Create init function/call at the bottom of the page.
 app.init = () => {
   console.log("this is the init function")
+  //add event listeners in fuctions (maybe we will eventually put them all into one function)
   app.pageLoadEvent();
   app.userInputEvent();
 }
@@ -16,14 +17,18 @@ app.userInput = document.querySelector('input');
 // EVENT LISTENERS
 
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
+
 app.pageLoadEvent = () => {
   app.startButton.addEventListener('click', function(){
-    console.log('boop');
+
+    // gets and stores the current default movie choice from our array
     const currentMovie = app.getDefaultMovieTitle();
-    // console.log(currentMovie);
-    app.getMovieInfo(currentMovie); //calls the API using the currentMovie name from our array
+    //calls the getMovieObject, passes it the currentMovie and the id of the startButton
+    app.getMovieObject(currentMovie, this.id);
+
     // hides button upon game initiation 
     this.classList.add('hide');
+    //reveals the form
     app.form.classList.remove('hide');
   })
 }
@@ -32,15 +37,12 @@ app.pageLoadEvent = () => {
 app.userInputEvent = () => {
   app.form.addEventListener('submit', function(event) {
     event.preventDefault();
-  
+    // stores the users Movie choice
     const userChoice = app.userInput.value;
-    // console.log()
-    app.getMovieInfo(userChoice);
+     //calls the getMovieObject, passes it the userChoice and the id of the form
+    app.getMovieObject(userChoice, this.id);
   })
 }
-
-
-
 
 // (1) NAMESPACE VARIABLES GLOBAL SCOPE
 const url = new URL('http://www.omdbapi.com/');
@@ -57,9 +59,10 @@ app.getDefaultMovieTitle = () => {
   return currentMovieTitle;
 }
 
-// (2) GET MOVIE INFO
-app.getMovieInfo = (title) => {
-
+// (2) GET MOVIE INFO API Call
+// these two parameters represent the title of the movie, and the id of which button triggered the API call
+app.getMovieObject = (title, buttonId) => {
+  console.log(buttonId);
   url.search = new URLSearchParams({
     apikey: key,
     t: title,
@@ -74,34 +77,34 @@ app.getMovieInfo = (title) => {
       // console.log(jsonResult.Genre); 
       if (currentMovieObj.Genre === "Adult") {
         console.log('naughty naughty');
-      }
-      // } else if (currentMovieObj.Title === "Teen Wolf") {
-      //   console.log(currentMovieObj);
-      //   // call the print function
-      //   app.printMovieInfo(currentMovieObj);
-      // } else if (currentMovieObj.Title === app.userInput.value){
-
-      // }
-      switch (currentMovieObj.Title) {
-        case app.userInput:
-          app.printMovieInfo(currentMovieObj);
-          console.log("user choice");
-          break;
-        case "Teen Wolf":
-          app.printMovieInfo(currentMovieObj);
-          console.log("our choice");
-          break;
-      }
+      } 
+      const movieContent = app.makeMovieContent(currentMovieObj);
+      app.printMovieContent(movieContent, buttonId);
+      
     })
+}
+//this function appends the movie content to the page. 
+  //the parameters represent a new array returned from makeMovieContent(), and the id representing which button triggered this chain of events to ultimately land the movieContent in the right section.
+app.printMovieContent = (array, buttonId) => {
+  console.log(buttonId);
+  //loops through the movieContentArray and prints the content to the page
+  for (let content of array) {
+    if (buttonId === "start-button") {
+      app.defaultMovieSelection.appendChild(content);
+    } else {
+      app.userMovieSelection.appendChild(content);
+    }
+  }
 }
 
 // THIS FUNCTION RETURNS RESULT FROM app.getMovieInfo and prints POSTER + TEXT elements into NEW POSTER and INFO CONTAINERS
-app.printMovieInfo = (currentMovieObj) => {
+app.makeMovieContent = (currentMovieObj) => {
   //destructuring for readability
   const { Title, Year, Plot, Poster, imdbRating } = currentMovieObj;
 
   const posterContainer = document.createElement('div');
   posterContainer.setAttribute('class', 'img-container')
+  
   //creating image for poster content
   const poster = document.createElement('img');
   poster.src = Poster;
@@ -112,15 +115,11 @@ app.printMovieInfo = (currentMovieObj) => {
   infoContainer.setAttribute('class', 'info-container');
   infoContainer.innerHTML =  `<h3>${Title}<span>${Year}</span></h3><p>${Plot}</p>`;
 
-  // prints poster/info to the default movie section
-  app.defaultMovieSelection.appendChild(posterContainer);
-  app.defaultMovieSelection.appendChild(infoContainer);
+// storing all this generated info in an array, and returning it to the print function
+  const movieContentArray = [posterContainer, infoContainer];
+  return movieContentArray;
+
 };
-
-// must figure out how to print user movie to user movie section
-// app.userMovieSelection.appendChild(posterContainer);
-// app.userMovieSelection.appendChild(infoContainer);
-
 
 
 // NEED TWO VARIABLES FOR IMDB RATINGS
