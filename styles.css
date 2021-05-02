@@ -48,3 +48,8 @@ footer {
     position: absolute;
     bottom: 0;
 }
+
+/* for js purposes */
+.hide {
+    display: none;
+}
