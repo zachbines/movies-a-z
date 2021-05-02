@@ -20,9 +20,9 @@ movieApp.startButton.addEventListener('click', function(){
   // Poster url to give us image
   // Title of the movie
   // Plot text content
-  
-  const info = movieApp.getMovieInfo(movieApp.getMovieName());
-  console.log(info);
+  const currentMovie = movieApp.getMovieTitle();
+  // console.log(currentMovie);
+  movieApp.getMovieInfo(currentMovie); //calls the API using the currentMovie name from our array
 })
 
 // (1) NAMESPACE VARIABLES GLOBAL SCOPE
@@ -34,14 +34,14 @@ const forbiddenGenre = "Adult";
 
 // THIS WILL BE THE FUNCTION THAT WILL PRINT THE INITIAL MOVIE POSTER (using the array of movie titles we've created)
 
-movieApp.getMovieName = () => {
+// GET MOVIE TITLE
+movieApp.getMovieTitle = () => {
   let i = 0;
   const currentMovieTitle = favMovies[i];
   // const info = movieApp.getMovieInfo(currentMovieTitle);
   // console.log(info);
   return currentMovieTitle;
 }
-
 // (2) GET MOVIE POSTER
 movieApp.getMovieInfo = (title, imdbCode) => {
 
@@ -62,11 +62,34 @@ movieApp.getMovieInfo = (title, imdbCode) => {
         console.log('naughty naughty');
       } else {
         console.log('It worked!', jsonResult);
-        return jsonResult;
+        // call the print function to 
+        movieApp.printMovieInfo(jsonResult);
       }
     })
-
 }
+
+movieApp.printMovieInfo = (currentMovieObj) => {
+  //destructuring for readability
+  const { Title, Year, Plot, Poster } = currentMovieObj;
+
+  const posterContainer = document.createElement('div');
+  posterContainer.setAttribute('class', 'img-container')
+  //creating image for poster content
+  const poster = document.createElement('img');
+  poster.src = Poster;
+  poster.alt = Title;
+  posterContainer.appendChild(poster);
+
+  const infoContainer = document.createElement('div');
+  infoContainer.setAttribute('class', 'info-container');
+  infoContainer.innerHTML =  `<h3>${Title}<span>${Year}</span></h3><p>${Plot}</p>`;
+
+
+  movieApp.defaultMovieSelection.appendChild(posterContainer);
+  movieApp.defaultMovieSelection.appendChild(infoContainer);
+  // console.log(currentMovieObj);
+}
+
 
 
 //      on topbutton click:
@@ -138,4 +161,4 @@ movieApp.getMovieInfo = (title, imdbCode) => {
 // displayUserPoster();
 
 
-// movieApp.init();
+movieApp.init();
