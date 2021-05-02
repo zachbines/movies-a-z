@@ -58,12 +58,11 @@ app.getDefaultMovieTitle = () => {
 }
 
 // (2) GET MOVIE INFO
-app.getMovieInfo = (title, imdbCode) => {
+app.getMovieInfo = (title) => {
 
   url.search = new URLSearchParams({
     apikey: key,
     t: title,
-    i: imdbCode,
     type: 'movie'
   })
 
@@ -75,10 +74,23 @@ app.getMovieInfo = (title, imdbCode) => {
       // console.log(jsonResult.Genre); 
       if (currentMovieObj.Genre === "Adult") {
         console.log('naughty naughty');
-      } else {
-        console.log(currentMovieObj);
-        // call the print function
-        app.printMovieInfo(currentMovieObj);
+      }
+      // } else if (currentMovieObj.Title === "Teen Wolf") {
+      //   console.log(currentMovieObj);
+      //   // call the print function
+      //   app.printMovieInfo(currentMovieObj);
+      // } else if (currentMovieObj.Title === app.userInput.value){
+
+      // }
+      switch (currentMovieObj.Title) {
+        case app.userInput:
+          app.printMovieInfo(currentMovieObj);
+          console.log("user choice");
+          break;
+        case "Teen Wolf":
+          app.printMovieInfo(currentMovieObj);
+          console.log("our choice");
+          break;
       }
     })
 }
@@ -103,12 +115,11 @@ app.printMovieInfo = (currentMovieObj) => {
   // prints poster/info to the default movie section
   app.defaultMovieSelection.appendChild(posterContainer);
   app.defaultMovieSelection.appendChild(infoContainer);
-  
-  // app.userMovieSelection.appendChild(posterContainer);
-  // app.userMovieSelection.appendChild(infoContainer);
-  };
+};
 
 // must figure out how to print user movie to user movie section
+// app.userMovieSelection.appendChild(posterContainer);
+// app.userMovieSelection.appendChild(infoContainer);
 
 
 
