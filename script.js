@@ -19,6 +19,7 @@ app.overlay = document.querySelector('aside');
 
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
 app.pageLoadEvent = () => {
+
   app.startButton.addEventListener('click', function(){
 
     // gets and stores the current default movie choice from our array
@@ -41,11 +42,10 @@ app.userInputEvent = () => {
     const userChoice = app.userInput.value;
      //calls the getMovieObject, passes it the userChoice and the id of the form
     app.getMovieObject(userChoice, this.id);
-
     // add two new buttons for CONFIRM event listener
     // put buttons in <ASIDE>
 
-    // THIS IS THE GOBACK BUTTON
+    // THIS IS THE GO BACK BUTTON
     const goBackButton = document.createElement('button')
     goBackButton.textContent = 'Go Back';
     goBackButton.id = 'go-back';
@@ -57,24 +57,33 @@ app.userInputEvent = () => {
 
     app.overlay.appendChild(goBackButton);
     app.overlay.appendChild(confirmButton);
+
+    // showing the buttons
     app.overlay.classList.remove('hide');
 
     // event listener for confirm/go-back buttons
-    app.overlay.addEventListener('click', function(event) {
-      console.log(event.target);
-      const button = event.target;
-
-      if (button.id === 'go-back') {
-        app.overlay.classList.add('hide');
-      } else {
-        app.compareMovies();
-      }
-    })
+    app.confirmMovie();
   })
 }
 
-app.compareMovies = (currentMovieObj) => {
-  console.log(currentMovieObj)
+app.confirmMovie = (imdbRating) => {
+  
+  app.overlay.addEventListener('click', function (event) {
+    console.log(event.target);
+
+    const button = event.target;
+
+    if (button.id === 'go-back') {
+      app.overlay.classList.add('hide');
+    } else {
+      // console.log('it worked aubrey', imdbRating);
+      app.compareMovies();
+    }
+  })
+}
+
+app.compareMovies = () => {
+  console.log()
 }
 
 // (1) NAMESPACE VARIABLES GLOBAL SCOPE
@@ -113,23 +122,51 @@ app.getMovieObject = (title, buttonId) => {
       } 
       // THIS IS ADDING THE IMAGE AND INFO CONTAINERS
       const movieContent = app.makeMovieContent(currentMovieObj);
-      app.printMovieContent(movieContent, buttonId);
+      app.printMovieContent(movieContent, buttonId, currentMovieObj.imdbRating);
       console.log(currentMovieObj);
     })
 }
 //this function appends the movie content to the page. 
   //the parameters represent a new array returned from makeMovieContent(), and the id representing which button triggered this chain of events to ultimately land the movieContent in the right section.
-app.printMovieContent = (array, buttonId) => {
-  console.log(buttonId);
-  //loops through the movieContentArray and prints the content to the page
-  for (let content of array) {
+  app.printMovieContent = (array, buttonId, imdbRating) => {
+    // console.log(buttonId);
+    //loops through the movieContentArray and prints the content to the page
+    
     if (buttonId === "start-button") {
-      app.defaultMovieSelection.appendChild(content);
-    } else {
-      app.userMovieSelection.appendChild(content);
+      for (let content of array) {
+        app.defaultMovieSelection.appendChild(content);
+      }
+      app.ratings.default = document.createElement('p');
+      app.ratings.id = buttonId;
+      app.ratings.textContent = `${buttonId} rating: ${imdbRating}`;
+      console.log(app.ratings.textContent);
+
+      } else {
+        for (let content of array) {
+          app.userMovieSelection.appendChild(content);
+        }
+        app.ratings.user = document.createElement('p');
+        app.ratings.id = buttonId;
+        app.ratings.textContent = `${buttonId} rating: ${imdbRating}`;
+        console.log(app.ratings.textContent);
+      }
     }
-  }
-}
+
+    console.log(app);
+  // app.printMovieContent = (array, buttonId, imdbRating) => {
+  //   console.log(buttonId);
+  //   //loops through the movieContentArray and prints the content to the page
+  //   for (let content of array) {
+  //     if (buttonId === "start-button") {
+  //       app.defaultMovieSelection.appendChild(content);
+  //       const defaultImdbRating = imdbRating;
+  //     } else {
+  //       app.userMovieSelection.appendChild(content);
+  //       app.confirmMovie(imdbRating);
+  //     }
+  //   }
+  // }
+  
 
 // THIS FUNCTION RETURNS RESULT FROM app.getMovieInfo and prints POSTER + TEXT elements into NEW POSTER and INFO CONTAINERS
 app.makeMovieContent = (currentMovieObj) => {
@@ -151,17 +188,18 @@ app.makeMovieContent = (currentMovieObj) => {
   infoContainer.setAttribute('class', 'info-container');
   infoContainer.innerHTML =  `<h3>${Title}<span>(${Year})</span></h3><p>${Plot}</p>`;
 
-  
-  // storing the imdbRating in a variable
-  const imdbRatingValue = imdbRating;
-  // console logging the imdbRating (just for our purposes)
-  console.log(`imdbRating is ${imdbRatingValue}`);
+  // // storing the imdbRating in a variable
+  // const imdbRatingValue = imdbRating;
+  // // console logging the imdbRating (just for our purposes)
+  // console.log(`imdbRating is ${imdbRatingValue}`);
   
   // storing all this generated info in an array, and returning it to the print function
   const movieContentArray = [posterContainer, infoContainer];
   return movieContentArray;
 };
 
+
+// const ratingNumber = document.getElementById('')
 
 // NEED TWO VARIABLES FOR IMDB RATINGS
 
@@ -186,3 +224,8 @@ app.makeMovieContent = (currentMovieObj) => {
 
 
 app.init();
+
+
+// tried to move the event listener for the confirm/go back buttons (aside delegated ) to a function that would fire in the print movies function. buttons are not visible, why? 
+
+// change the loop to be two loops in both the if and the else statement (in printMovies)
