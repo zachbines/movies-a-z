@@ -13,11 +13,11 @@ app.userMovieSelection = document.querySelector('.user-movie');
 app.startButton = document.querySelector('.start-button')
 app.form = document.querySelector('form');
 app.userInput = document.querySelector('input');
+app.overlay = document.querySelector('aside');
 
 // EVENT LISTENERS
 
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
-
 app.pageLoadEvent = () => {
   app.startButton.addEventListener('click', function(){
 
@@ -41,7 +41,27 @@ app.userInputEvent = () => {
     const userChoice = app.userInput.value;
      //calls the getMovieObject, passes it the userChoice and the id of the form
     app.getMovieObject(userChoice, this.id);
+
+    // add new button for CONFIRM event listener
+    // put button in <ASIDE>
+    const goBackButton = document.createElement('button')
+    goBackButton.textContent = 'Go Back';
+    const confirmButton = document.createElement('button');
+    confirmButton.textContent = 'Confirm';
+
+    app.overlay.appendChild(goBackButton);
+    app.overlay.appendChild(confirmButton);
+    app.overlay.classList.remove('hide');
+
+    // event listener for confirm button
+    app.overlay.addEventListener('click', function(event) {
+      console.log(event);
+    })
   })
+}
+
+app.userConfirmChoiceEvent = () => {
+
 }
 
 // (1) NAMESPACE VARIABLES GLOBAL SCOPE
@@ -62,7 +82,7 @@ app.getDefaultMovieTitle = () => {
 // (2) GET MOVIE INFO API Call
 // these two parameters represent the title of the movie, and the id of which button triggered the API call
 app.getMovieObject = (title, buttonId) => {
-  console.log(buttonId);
+  // console.log(buttonId);
   url.search = new URLSearchParams({
     apikey: key,
     t: title,
@@ -78,9 +98,10 @@ app.getMovieObject = (title, buttonId) => {
       if (currentMovieObj.Genre === "Adult") {
         console.log('naughty naughty');
       } 
+      // THIS IS ADDING THE IMAGE AND INFO CONTAINERS
       const movieContent = app.makeMovieContent(currentMovieObj);
       app.printMovieContent(movieContent, buttonId);
-      
+      console.log(currentMovieObj);
     })
 }
 //this function appends the movie content to the page. 
@@ -102,6 +123,7 @@ app.makeMovieContent = (currentMovieObj) => {
   //destructuring for readability
   const { Title, Year, Plot, Poster, imdbRating } = currentMovieObj;
 
+  // CREATE AND APPEND POSTER CONTAINER
   const posterContainer = document.createElement('div');
   posterContainer.setAttribute('class', 'img-container')
   
@@ -111,14 +133,20 @@ app.makeMovieContent = (currentMovieObj) => {
   poster.alt = Title;
   posterContainer.appendChild(poster);
 
+  // CREATE AND APPEND TEXT CONTAINER
   const infoContainer = document.createElement('div');
   infoContainer.setAttribute('class', 'info-container');
-  infoContainer.innerHTML =  `<h3>${Title}<span>${Year}</span></h3><p>${Plot}</p>`;
+  infoContainer.innerHTML =  `<h3>${Title}<span>(${Year})</span></h3><p>${Plot}</p>`;
 
-// storing all this generated info in an array, and returning it to the print function
+  
+  // storing the imdbRating in a variable
+  const imdbRatingValue = imdbRating;
+  // console logging the imdbRating (just for our purposes)
+  console.log(`imdbRating is ${imdbRatingValue}`);
+  
+  // storing all this generated info in an array, and returning it to the print function
   const movieContentArray = [posterContainer, infoContainer];
   return movieContentArray;
-
 };
 
 
