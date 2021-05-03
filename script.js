@@ -42,26 +42,39 @@ app.userInputEvent = () => {
      //calls the getMovieObject, passes it the userChoice and the id of the form
     app.getMovieObject(userChoice, this.id);
 
-    // add new button for CONFIRM event listener
-    // put button in <ASIDE>
+    // add two new buttons for CONFIRM event listener
+    // put buttons in <ASIDE>
+
+    // THIS IS THE GOBACK BUTTON
     const goBackButton = document.createElement('button')
     goBackButton.textContent = 'Go Back';
+    goBackButton.id = 'go-back';
+
+    // THIS IS THE CONFIRM BUTTON
     const confirmButton = document.createElement('button');
     confirmButton.textContent = 'Confirm';
+    confirmButton.id = 'confirm';
 
     app.overlay.appendChild(goBackButton);
     app.overlay.appendChild(confirmButton);
     app.overlay.classList.remove('hide');
 
-    // event listener for confirm button
+    // event listener for confirm/go-back buttons
     app.overlay.addEventListener('click', function(event) {
-      console.log(event);
+      console.log(event.target);
+      const button = event.target;
+
+      if (button.id === 'go-back') {
+        app.overlay.classList.add('hide');
+      } else {
+        app.compareMovies();
+      }
     })
   })
 }
 
-app.userConfirmChoiceEvent = () => {
-
+app.compareMovies = (currentMovieObj) => {
+  console.log(currentMovieObj)
 }
 
 // (1) NAMESPACE VARIABLES GLOBAL SCOPE
