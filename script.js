@@ -14,7 +14,8 @@ app.startButton = document.querySelector('.start-button')
 app.form = document.querySelector('form');
 app.userInput = document.querySelector('input');
 app.overlay = document.querySelector('aside');
-
+//later used to store the ratings for each movie
+app.ratings = [];
 // EVENT LISTENERS
 
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
@@ -58,16 +59,17 @@ app.userInputEvent = () => {
     app.overlay.appendChild(goBackButton);
     app.overlay.appendChild(confirmButton);
 
-    // showing the buttons
-    app.overlay.classList.remove('hide');
+    
 
-    // event listener for confirm/go-back buttons
-    app.confirmMovie();
+    
   })
 }
 
-app.confirmMovie = (imdbRating) => {
-  
+// event listener for confirm/go-back buttons
+app.confirmMovie = (bothMovieRatings) => {
+  // showing the buttons
+  app.overlay.classList.remove('hide');
+
   app.overlay.addEventListener('click', function (event) {
     console.log(event.target);
 
@@ -76,15 +78,14 @@ app.confirmMovie = (imdbRating) => {
     if (button.id === 'go-back') {
       app.overlay.classList.add('hide');
     } else {
-      // console.log('it worked aubrey', imdbRating);
-      app.compareMovies();
+      //here is where we would call the app.compareMovies() function, and pass it bothMovieRatings to compare them
     }
   })
 }
 
-app.compareMovies = () => {
-  console.log()
-}
+// app.compareMovies = () => {
+//   console.log()
+// }
 
 // (1) NAMESPACE VARIABLES GLOBAL SCOPE
 const url = new URL('http://www.omdbapi.com/');
@@ -131,47 +132,29 @@ app.getMovieObject = (title, buttonId) => {
   app.printMovieContent = (array, buttonId, imdbRating) => {
     // console.log(buttonId);
     //loops through the movieContentArray and prints the content to the page
-    
+    const ratingsBothMovies = app.ratings.push([buttonId, imdbRating]);
+
     if (buttonId === "start-button") {
       for (let content of array) {
         app.defaultMovieSelection.appendChild(content);
       }
-      app.ratings.default = document.createElement('p');
-      app.ratings.id = buttonId;
-      app.ratings.textContent = `${buttonId} rating: ${imdbRating}`;
-      console.log(app.ratings.textContent);
-
-      } else {
-        for (let content of array) {
-          app.userMovieSelection.appendChild(content);
-        }
-        app.ratings.user = document.createElement('p');
-        app.ratings.id = buttonId;
-        app.ratings.textContent = `${buttonId} rating: ${imdbRating}`;
-        console.log(app.ratings.textContent);
+    } else {
+      for (let content of array) {
+        app.userMovieSelection.appendChild(content);
       }
+      // this where we will call the confirm movie function (and pass it the app.ratings array),
+      // event listener for confirm/go-back buttons
+      app.confirmMovie(ratingsBothMovies);
+        // inside that we will likely call a compareMovies function
+      console.log(ratingsBothMovies);
     }
-
-    console.log(app);
-  // app.printMovieContent = (array, buttonId, imdbRating) => {
-  //   console.log(buttonId);
-  //   //loops through the movieContentArray and prints the content to the page
-  //   for (let content of array) {
-  //     if (buttonId === "start-button") {
-  //       app.defaultMovieSelection.appendChild(content);
-  //       const defaultImdbRating = imdbRating;
-  //     } else {
-  //       app.userMovieSelection.appendChild(content);
-  //       app.confirmMovie(imdbRating);
-  //     }
-  //   }
-  // }
+  }
   
 
 // THIS FUNCTION RETURNS RESULT FROM app.getMovieInfo and prints POSTER + TEXT elements into NEW POSTER and INFO CONTAINERS
 app.makeMovieContent = (currentMovieObj) => {
   //destructuring for readability
-  const { Title, Year, Plot, Poster, imdbRating } = currentMovieObj;
+  const { Title, Year, Plot, Poster } = currentMovieObj;
 
   // CREATE AND APPEND POSTER CONTAINER
   const posterContainer = document.createElement('div');
@@ -186,13 +169,8 @@ app.makeMovieContent = (currentMovieObj) => {
   // CREATE AND APPEND TEXT CONTAINER
   const infoContainer = document.createElement('div');
   infoContainer.setAttribute('class', 'info-container');
-  infoContainer.innerHTML =  `<h3>${Title}<span>(${Year})</span></h3><p>${Plot}</p>`;
+  infoContainer.innerHTML = `<h3>${Title}<span>(${Year})</span></h3><p>${Plot}</p>`;
 
-  // // storing the imdbRating in a variable
-  // const imdbRatingValue = imdbRating;
-  // // console logging the imdbRating (just for our purposes)
-  // console.log(`imdbRating is ${imdbRatingValue}`);
-  
   // storing all this generated info in an array, and returning it to the print function
   const movieContentArray = [posterContainer, infoContainer];
   return movieContentArray;
@@ -225,7 +203,3 @@ app.makeMovieContent = (currentMovieObj) => {
 
 app.init();
 
-
-// tried to move the event listener for the confirm/go back buttons (aside delegated ) to a function that would fire in the print movies function. buttons are not visible, why? 
-
-// change the loop to be two loops in both the if and the else statement (in printMovies)
