@@ -10,6 +10,10 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 
 .visuallyHidden:not(:focus):not(:active) { position: absolute; width: 1px; height: 1px; margin: -1px;border: 0;padding: 0;white-space: nowrap;clip-path: inset(100%);clip: rect(00 0 0);overflow: hidden;}
 
+* {
+    border: 1px solid black;
+}
+
 img {
     width: 100%;
 }
@@ -36,6 +40,17 @@ form {
     flex-direction: column;
 }
 
+aside {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
 .game-window {
     display: flex;
     justify-content: space-evenly;
@@ -47,6 +62,8 @@ form {
 
 .img-container {
     border: 10px dotted goldenrod;
+    max-height: 600px;
+    max-width: 400px;
 }
 
 footer {
