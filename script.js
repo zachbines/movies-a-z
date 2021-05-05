@@ -1,5 +1,4 @@
 const app = {}; 
-app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity"];
 
 // Create init function/call at the bottom of the page.
 app.init = () => {
@@ -9,18 +8,19 @@ app.init = () => {
   app.userInputEvent();
 }
 
-  // Cache existing html selectors we will need for appending
+// Cache existing html selectors we will need for appending
 
-  app.gameContainer = document.querySelector('.game-window');
-  app.defaultMovieSelection = document.querySelector('.default-movie');
-  app.userMovieSelection = document.querySelector('.user-movie');
-  app.startButton = document.querySelector('.start-button')
-  app.form = document.querySelector('form');
-  app.userInput = document.querySelector('input');
-  app.overlay = document.querySelector('aside');
+app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity"];
+app.gameContainer = document.querySelector('.game-window');
+app.defaultMovieSelection = document.querySelector('.default-movie');
+app.userMovieSelection = document.querySelector('.user-movie');
+app.startButton = document.querySelector('.start-button')
+app.form = document.querySelector('form');
+app.userInput = document.querySelector('input');
+app.overlay = document.querySelector('aside');
 
-  //later used to store the ratings for each movie
-  app.ratings = [];
+//later used to store the ratings for each movie
+app.ratings = [];
 
 // EVENT LISTENERS
 
@@ -30,6 +30,7 @@ app.pageLoadEvent = () => {
   app.startButton.addEventListener('click', function(){
     // this makes sure the default movie section resets after start button is pressed
     app.defaultMovieSelection.replaceChildren();
+    app.userInput.value = '';
 
     if (i === 0) {
       // gets and stores the current default movie choice from our array
@@ -190,18 +191,33 @@ app.confirmMovie = (bothMovieRatings) => {
 }
 
 app.compareMovies = (bothMovieRatings) => {
-  // console.log(bothMovieRatings);
   const defaultMovieRating = parseFloat(bothMovieRatings[0][1]);
   const userMovieRating = parseFloat(bothMovieRatings[1][1]);
-  // console.log(defaultMovieRating);
-  // console.log(userMovieRating);
+
   if (defaultMovieRating < userMovieRating) {
     console.log('User wins');
+    app.scoreMessage(defaultMovieRating, userMovieRating); 
+
   } else if (defaultMovieRating > userMovieRating) {
-    console.log('We win');
+    console.log('We win'); 
+    app.scoreMessage(defaultMovieRating, userMovieRating); 
+    
   } else if (defaultMovieRating === userMovieRating) {
     console.log('Would you look at that');
+
   }
+}
+
+app.scoreMessage = (defaultRating, userRating) => {
+
+  const userScoreTextElement = document.createElement('p');
+  userScoreTextElement.classList.add('winner');
+  userScoreTextElement.textContent = userRating;
+  const defaultScoreTextElement = document.createElement('p');
+  defaultScoreTextElement.classList.add('winner');
+  defaultScoreTextElement.textContent = defaultRating;
+  app.userMovieSelection.appendChild(userScoreTextElement);
+  app.defaultMovieSelection.appendChild(defaultScoreTextElement);
 }
 
 app.resetGame = () => {
@@ -224,3 +240,9 @@ app.resetGame = () => {
 
 app.init();
 
+// target genre:
+  // we want the user to be limited to choosing a film that is the same genre as the default movie. 
+
+// error handling:
+  // stop overlay buttons from appending when enter is clicked
+  //how to respond to a movie that doesnt exist (spelling mistakes etc.)

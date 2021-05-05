@@ -11,6 +11,10 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
     border: 1px solid black;
 }
 
+html {
+    font-size: 62.5%;
+}
+
 img {
     width: 100%;
 }
@@ -58,9 +62,9 @@ aside {
 }
 
 .img-container {
+    position: relative;
     border: 10px dotted goldenrod;
-    /* max-height: 600px;
-    max-width: 400px; */
+    z-index: -1;
 }
 
 img {
@@ -76,4 +80,13 @@ footer {
 /* for js purposes */
 .hide {
     display: none;
+}
+
+.winner {
+    position: relative;
+    font-size: calc(5rem + 4vw);
+    color: green;
+    left: 25%;
+    bottom: 60%;
+    width: 60%;
 }
