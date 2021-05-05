@@ -1,5 +1,5 @@
 const app = {}; 
-app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Old Boy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity"];
+app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity"];
 
 // Create init function/call at the bottom of the page.
 app.init = () => {
@@ -26,14 +26,23 @@ app.init = () => {
 
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
 app.pageLoadEvent = () => {
-
+  let i = 0;
   app.startButton.addEventListener('click', function(){
+    // this makes sure the default movie section resets after start button is pressed
+    app.defaultMovieSelection.replaceChildren();
 
-    // gets and stores the current default movie choice from our array
-    const currentMovie = app.getDefaultMovieTitle();
-    //calls the getMovieObject, passes it the currentMovie and the id of the startButton
-    app.getMovieObject(currentMovie, this.id);
-
+    if (i === 0) {
+      // gets and stores the current default movie choice from our array
+      const currentMovie = app.getDefaultMovieTitle(i);
+      //calls the getMovieObject, passes it the currentMovie and the id of the startButton
+      app.getMovieObject(currentMovie, this.id);
+      i++;
+    } else {
+      const currentMovie = app.getDefaultMovieTitle(i);
+      //calls the getMovieObject, passes it the currentMovie and the id of the startButton
+      app.getMovieObject(currentMovie, this.id);
+      i++;
+    }
     // hides button upon game initiation 
     this.classList.add('hide');
     //reveals the form
@@ -72,8 +81,8 @@ app.userInputEvent = () => {
 
 // GET MOVIE TITLE
 // THIS FUNCTION RETURNS FIRST MOVIE FROM ARRAY
-app.getDefaultMovieTitle = () => {
-  let i = 0;
+
+app.getDefaultMovieTitle = (i) => {
   const currentMovieTitle = app.favMovies[i];
   return currentMovieTitle;
 }
@@ -128,7 +137,6 @@ app.printMovieContent = (array, buttonId, imdbRating) => {
   }
 }
 
-
 // THIS FUNCTION RETURNS RESULT FROM app.getMovieInfo and prints POSTER + TEXT elements into NEW POSTER and INFO CONTAINERS
 app.makeMovieContent = (currentMovieObj) => {
   //destructuring for readability
@@ -163,21 +171,20 @@ app.confirmMovie = (bothMovieRatings) => {
   app.overlay.addEventListener('click', function (event) {
     // console.log(event.target);
     const button = event.target;
-
+    
     if (button.id === 'go-back') {
       // this removes button duplicates from populating
       app.overlay.replaceChildren();
+      app.overlay.classList.add('hide');
       app.userMovieSelection.replaceChildren();
       app.userInput.value = '';
       console.log('user went back');
       // this prevents array from having more than one user rating at a time if they change their minds
       bothMovieRatings.pop();
-      app.overlay.classList.add('hide');
     } else if (button.id === 'confirm'){
       //here is where we would call the app.compareMovies() function, and pass it bothMovieRatings to compare them
-      app.overlay.innerHTML = '';
-      app.overlay.classList.add('hide');
       app.compareMovies(bothMovieRatings);
+      app.resetGame();
     }
   })
 }
@@ -197,30 +204,22 @@ app.compareMovies = (bothMovieRatings) => {
   }
 }
 
-// NEXT STEPS
-// figure out how to reset UserMovieSection every round
-// figure out how round 2 onward looks for user
+app.resetGame = () => {
+  app.overlay.replaceChildren();
+  app.overlay.classList.add('hide');
+  app.form.classList.add('hide');
+  app.startButton.classList.remove('hide');
+  app.startButton.textContent = 'Next round';
+}
 
-// NEED TWO VARIABLES FOR IMDB RATINGS
-
-//      on topbutton click:
-// clear html to repopulate the section
-//   fetch the movie poster via the imdbID# using the random number variable. 
-// 	create img and div elements to store the image data within
-//   append container div / img to section along with movie title and plot below
-//     button is replaced by text input which placeholder text prompting the user to “name a BETTER movie.”  (They should write a movie title here….”)
-
-// When user submits their movie choice:
-// fetch the data from the api using the title parameter
-//   create img and div elements to store the image data within
-//     append container div / img to section along with movie title and plot below, along side the randomly generated movie poster to compare
-//       text input disappears, is placed by button which says “are you sure ?”
-
-// When “are you sure ?” Button is clicked
-//   a prompt will appear telling them if their movie is BETTER or WORSE(subject to change) than the DEFAULT movie based on IMDB rating score along with the text stating which one is the WINNER. 
-// 	the above will be decided via conditionals based on the imdb rating property from within the objects returned from the api
-//   the winning poster will scale slightly bigger to give a visual cue as to which one is the winner
-//     topbutton reappears to restart the game
+// TWO SCENARIOS
+  // (1) USER WINS
+    // Append text on top of userMovie poster
+    // style css to give a celebratory visual cue
+  // (2) DEFAULT WINS
+    // Append text to the userMovie poster
+    // style css to get a less celebratory visual cue
+  // RAINCLOUD OR SUNSHINE STRETCH GOAL
 
 
 app.init();
