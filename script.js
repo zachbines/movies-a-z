@@ -9,15 +9,19 @@ app.init = () => {
   app.userInputEvent();
 }
 
-// Cache existing html selectors we will need for appending
-app.defaultMovieSelection = document.querySelector('.default-movie');
-app.userMovieSelection = document.querySelector('.user-movie');
-app.startButton = document.querySelector('.start-button')
-app.form = document.querySelector('form');
-app.userInput = document.querySelector('input');
-app.overlay = document.querySelector('aside');
-//later used to store the ratings for each movie
-app.ratings = [];
+  // Cache existing html selectors we will need for appending
+
+  app.gameContainer = document.querySelector('.game-window');
+  app.defaultMovieSelection = document.querySelector('.default-movie');
+  app.userMovieSelection = document.querySelector('.user-movie');
+  app.startButton = document.querySelector('.start-button')
+  app.form = document.querySelector('form');
+  app.userInput = document.querySelector('input');
+  app.overlay = document.querySelector('aside');
+
+  //later used to store the ratings for each movie
+  app.ratings = [];
+
 // EVENT LISTENERS
 
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
@@ -104,6 +108,7 @@ app.getMovieObject = (title, buttonId) => {
 //the parameters represent a new array returned from makeMovieContent(), and the id representing which button triggered this chain of events to ultimately land the movieContent in the right section.
 app.printMovieContent = (array, buttonId, imdbRating) => {
   // console.log(buttonId);
+  app.userMovieSelection.replaceChildren();
   //loops through the movieContentArray and prints the content to the page
   app.ratings.push([buttonId, imdbRating]);
   
@@ -161,9 +166,10 @@ app.confirmMovie = (bothMovieRatings) => {
 
     if (button.id === 'go-back') {
       // this removes button duplicates from populating
-      app.overlay.innerHTML = '';
-      app.userMovieSelection.innerHTML = '';
+      app.overlay.replaceChildren();
+      app.userMovieSelection.replaceChildren();
       app.userInput.value = '';
+      console.log('user went back');
       // this prevents array from having more than one user rating at a time if they change their minds
       bothMovieRatings.pop();
       app.overlay.classList.add('hide');
@@ -180,8 +186,8 @@ app.compareMovies = (bothMovieRatings) => {
   // console.log(bothMovieRatings);
   const defaultMovieRating = parseFloat(bothMovieRatings[0][1]);
   const userMovieRating = parseFloat(bothMovieRatings[1][1]);
-  console.log(defaultMovieRating);
-  console.log(userMovieRating);
+  // console.log(defaultMovieRating);
+  // console.log(userMovieRating);
   if (defaultMovieRating < userMovieRating) {
     console.log('User wins');
   } else if (defaultMovieRating > userMovieRating) {
