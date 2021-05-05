@@ -117,18 +117,19 @@ app.getMovieObject = (title, buttonId) => {
 }
 //this function appends the movie content to the page. 
 //the parameters represent a new array returned from makeMovieContent(), and the id representing which button triggered this chain of events to ultimately land the movieContent in the right section.
-app.printMovieContent = (array, buttonId, imdbRating) => {
+app.printMovieContent = (posterContent, buttonId, imdbRating) => {
   // console.log(buttonId);
   app.userMovieSelection.replaceChildren();
   //loops through the movieContentArray and prints the content to the page
   app.ratings.push([buttonId, imdbRating]);
   
   if (buttonId === "start-button") {
-    for (let content of array) {
+    for (let content of posterContent.array) {
       app.defaultMovieSelection.appendChild(content);
     }
+    app.userMovieSelection.appendChild(posterContent.empty)
   } else {
-    for (let content of array) {
+    for (let content of posterContent.array) {
       app.userMovieSelection.appendChild(content);
     } 
     // this where we will call the confirm movie function (and pass it the app.ratings array),
@@ -143,6 +144,11 @@ app.printMovieContent = (array, buttonId, imdbRating) => {
 app.makeMovieContent = (currentMovieObj) => {
   //destructuring for readability
   const { Title, Year, Plot, Poster } = currentMovieObj;
+
+  // CREATING CONTAINER FOR PLACEHOLDER BOX WITH QUESTION MARK
+  const placeholderContainer = document.createElement('div');
+  placeholderContainer.classList.add('img-container', 'question-mark')
+  placeholderContainer.textContent = '?';
   
   // CREATE AND APPEND POSTER CONTAINER
   const posterContainer = document.createElement('div');
@@ -160,7 +166,10 @@ app.makeMovieContent = (currentMovieObj) => {
   infoContainer.innerHTML = `<h3>${Title}<span>(${Year})</span></h3><p>${Plot}</p>`;
   
   // storing all this generated info in an array, and returning it to the print function
-  const movieContentArray = [posterContainer, infoContainer];
+  const movieContentArray = {
+    array: [posterContainer, infoContainer],
+    empty: placeholderContainer
+  };
   return movieContentArray;
 };
   
