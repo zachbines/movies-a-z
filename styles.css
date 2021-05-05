@@ -19,10 +19,6 @@ body {
     font-size: 2rem;
 }
 
-img {
-    width: 100%;
-}
-
 .wrapper {
     width: 90%;
     max-width: 1400px;
@@ -63,19 +59,25 @@ aside {
 
 .movie {
     margin: 20px;
-    /* width: 100%; */
+    width: calc(50% - 40px);
 }
 
 .img-container {
-
     position: relative;
     border: 10px dotted goldenrod;
     z-index: -1;
+    height: 600px;
 }
 
-img {
-    width: 100%;
-    height: auto;
+.img-container img {
+    /* border: 10px dotted goldenrod; */
+    max-height: 100%;
+    margin: 0 auto;
+    height: 100%;
+    max-width: 100%;
+    /* width: auto; */
+    object-fit: contain;
+    display: block;
 }
 
 footer {
