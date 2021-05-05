@@ -20,7 +20,7 @@ app.userInput = document.querySelector('input');
 app.overlay = document.querySelector('aside');
 
 //later used to store the ratings for each movie
-app.ratings = [];
+
 
 // EVENT LISTENERS
 
@@ -31,6 +31,7 @@ app.pageLoadEvent = () => {
     // this makes sure the default movie section resets after start button is pressed
     app.defaultMovieSelection.replaceChildren();
     app.userInput.value = '';
+    app.ratings = [];
 
     if (i === 0) {
       // gets and stores the current default movie choice from our array
@@ -207,17 +208,27 @@ app.compareMovies = (bothMovieRatings) => {
 
   }
 }
+// these are global right now
+  //work on trying to append them using less code and not creating these elements in global scope
+  // maybe try a loop inside scoreMessage function 
+  
+const userScoreTextElement = document.createElement('p');
+const defaultScoreTextElement = document.createElement('p');
 
 app.scoreMessage = (defaultRating, userRating) => {
-
-  const userScoreTextElement = document.createElement('p');
+  //clears p
+  userScoreTextElement.textContent = '';
+  defaultScoreTextElement.textContent = '';
+// user movie score elements
   userScoreTextElement.classList.add('winner');
   userScoreTextElement.textContent = userRating;
-  const defaultScoreTextElement = document.createElement('p');
+//default movie score elements
   defaultScoreTextElement.classList.add('winner');
   defaultScoreTextElement.textContent = defaultRating;
+// appending both
   app.userMovieSelection.appendChild(userScoreTextElement);
   app.defaultMovieSelection.appendChild(defaultScoreTextElement);
+
 }
 
 app.resetGame = () => {
@@ -246,3 +257,4 @@ app.init();
 // error handling:
   // stop overlay buttons from appending when enter is clicked
   //how to respond to a movie that doesnt exist (spelling mistakes etc.)
+
