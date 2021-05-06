@@ -6,7 +6,11 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 
 .visuallyHidden:not(:focus):not(:active) { position: absolute; width: 1px; height: 1px; margin: -1px;border: 0;padding: 0;white-space: nowrap;clip-path: inset(100%);clip: rect(00 0 0);overflow: hidden;}
 
-/* font-family: 'Lora', serif; */
+/* font-family: 'Barlow', sans-serif;
+
+font-family: 'Cinzel', serif;
+
+font-family: 'Coming Soon', cursive; */
 
 * {
     border: 1px solid black;
@@ -17,7 +21,10 @@ html {
 }
 
 body {
-    font-size: 2rem;
+    font-size: 3rem;
+    color: white;
+    font-family: 'Barlow', sans-serif;
+    background-color: black;
 }
 
 .wrapper {
@@ -26,20 +33,43 @@ body {
     margin: 0 auto;
 }
 
+h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 8rem;
+}
+
+.name {
+    font-family: 'Coming Soon', cursive;
+    font-size: 4rem;
+}
+
+button {
+    border: 5px solid skyblue;
+    border-radius: 10px;
+    background-color: transparent;
+    color: white;
+    margin: 20px 0;
+    padding: 1.5rem 3rem;
+}
+
+aside button {
+    box-shadow: 0 0 1rem black;
+    margin: 1rem;
+    background-color: rgba(0,0,0,0.6);
+}
+
+
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-button {
-    border: 2px solid red;
-    margin: 20px 0;
-}
-
 form {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    margin-top: 3rem;
 }
 
 aside {
@@ -51,6 +81,21 @@ aside {
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.2);
+}
+
+.instructions {
+    font-weight: 600;
+    line-height: 4rem;
+    letter-spacing: 1.5px;
+}
+
+input {
+    background-color: transparent;
+    border-radius: 10px;
+    color: white;
+    border: 5px solid skyblue;
+    padding: 1rem 2rem;
+    text-align: center;
 }
 
 .game-window {
@@ -84,14 +129,16 @@ aside {
     margin: 0 auto;
     height: 100%;
     max-width: 100%;
-    /* width: auto; */
     object-fit: contain;
     display: block;
 }
 
 footer {
-    position: absolute;
-    bottom: 0;
+    height: 10vh;
+    display:flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 5px;
 }
 
 /* for js purposes */
@@ -99,11 +146,19 @@ footer {
     display: none;
 }
 
-.winner {
+.score {
+    font-family: 'Coming Soon', cursive;
     position: relative;
-    font-size: calc(5rem + 4vw);
-    color: green;
+    font-size: 10rem;
+    color: black;
     left: 25%;
     bottom: 60%;
-    width: 60%;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    background-color: orange;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

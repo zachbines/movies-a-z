@@ -10,7 +10,7 @@ app.init = () => {
 
 // Cache existing html selectors we will need for appending
 
-app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity"];
+app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network"];
 app.gameContainer = document.querySelector('.game-window');
 app.defaultMovieSelection = document.querySelector('.default-movie');
 app.userMovieSelection = document.querySelector('.user-movie');
@@ -229,10 +229,10 @@ app.scoreMessage = (defaultRating, userRating) => {
   userScoreTextElement.textContent = '';
   defaultScoreTextElement.textContent = '';
 // user movie score elements
-  userScoreTextElement.classList.add('winner');
+  userScoreTextElement.classList.add('score');
   userScoreTextElement.textContent = userRating;
 //default movie score elements
-  defaultScoreTextElement.classList.add('winner');
+  defaultScoreTextElement.classList.add('score');
   defaultScoreTextElement.textContent = defaultRating;
 // appending both
   app.userMovieSelection.appendChild(userScoreTextElement);
