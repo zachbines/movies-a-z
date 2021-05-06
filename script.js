@@ -187,7 +187,7 @@ app.confirmMovie = (bothMovieRatings) => {
       // this removes button duplicates from populating
       app.overlay.replaceChildren();
       app.overlay.classList.add('hide');
-      app.userMovieSelection.replaceChildren();
+      // app.userMovieSelection.replaceChildren();
       app.userInput.value = '';
       console.log('user went back');
       // this prevents array from having more than one user rating at a time if they change their minds
@@ -264,6 +264,8 @@ app.init();
   // we want the user to be limited to choosing a film that is the same genre as the default movie. 
 
 // error handling:
-  // stop overlay buttons from appending when enter is clicked
-  //how to respond to a movie that doesnt exist (spelling mistakes etc.)
+  // stop overlay buttons from appending one after another when clicked or enter is clicked.
+  // (maybe just hide the form and put the aside where the form is)
+
+  // how to respond to a movie that doesnt exist (spelling mistakes etc.)
 
