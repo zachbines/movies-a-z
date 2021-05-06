@@ -163,7 +163,7 @@ app.makeMovieContent = (currentMovieObj) => {
   // CREATE AND APPEND TEXT CONTAINER
   const infoContainer = document.createElement('div');
   infoContainer.setAttribute('class', 'info-container');
-  infoContainer.innerHTML = `<h3>${Title}<span>(${Year})</span></h3><p>${Plot}</p>`;
+  infoContainer.innerHTML = `<h3>${Title}</h3> <p>${Year}</p><p>${Plot}</p>`;
   
   // storing all this generated info in an array, and returning it to the print function
   const movieContentArray = {
