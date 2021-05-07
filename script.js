@@ -11,6 +11,7 @@ app.init = () => {
 // Cache existing html selectors we will need for appending
 
 app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network"];
+
 app.gameContainer = document.querySelector('.game-window');
 app.defaultMovieSelection = document.querySelector('.default-movie');
 app.userMovieSelection = document.querySelector('.user-movie');
@@ -18,29 +19,35 @@ app.startButton = document.querySelector('.start-button')
 app.form = document.querySelector('form');
 app.userInput = document.querySelector('input');
 app.overlay = document.querySelector('aside');
-
-//later used to store the ratings for each movie
-
+//created p's for the score cards
+app.userScoreCard = document.createElement('p');
+app.defaultScoreCard = document.createElement('p');
 
 // EVENT LISTENERS
 
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
 app.pageLoadEvent = () => {
+  // starts the favMovies array at 0
   let i = 0;
+
   app.startButton.addEventListener('click', function(){
-    // this makes sure the default movie section resets after start button is pressed
+    // these lines ensure the default movie section and the scores reset after the start button is clicked
     app.defaultMovieSelection.replaceChildren();
     app.userInput.value = '';
+    //later used to store the ratings for each movie
     app.ratings = [];
 
+    // the first time the game starts
     if (i === 0) {
       // gets and stores the current default movie choice from our array
       const currentMovie = app.getDefaultMovieTitle(i);
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
       i++;
+
     } else {
       const currentMovie = app.getDefaultMovieTitle(i);
+      app.userInput.placeholder = `OK how bout this one? ⤵`;
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
       i++;
@@ -73,6 +80,7 @@ app.userInputEvent = () => {
     confirmButton.textContent = 'Confirm';
     confirmButton.id = 'confirm';
 
+    app.overlay.replaceChildren();
     app.overlay.appendChild(goBackButton);
     app.overlay.appendChild(confirmButton);
     
@@ -84,8 +92,8 @@ app.userInputEvent = () => {
 // GET MOVIE TITLE
 // THIS FUNCTION RETURNS FIRST MOVIE FROM ARRAY
 
-app.getDefaultMovieTitle = (i) => {
-  const currentMovieTitle = app.favMovies[i];
+app.getDefaultMovieTitle = (title) => {
+  const currentMovieTitle = app.favMovies[title];
   return currentMovieTitle;
 }
 
@@ -105,14 +113,23 @@ app.getMovieObject = (title, buttonId) => {
     return response.json();
   })
   .then((currentMovieObj) => {
+    const { Type, imdbRating, Poster, Plot } = currentMovieObj;
     // console.log(jsonResult.Genre); 
     if (currentMovieObj.Genre === "Adult") {
       console.log('naughty naughty');
-    } 
-    // THIS IS ADDING THE IMAGE AND INFO CONTAINERS
-    const movieContent = app.makeMovieContent(currentMovieObj);
-    app.printMovieContent(movieContent, buttonId, currentMovieObj.imdbRating);
-    console.log(currentMovieObj);
+    } else if (
+      Type === "movie" &&
+      imdbRating !== "N/A" &&
+      Poster !== "N/A" &&
+      Plot !== "N/A") {
+      const movieContent = app.makeMovieContent(currentMovieObj);
+      // THIS IS ADDING THE IMAGE AND INFO CONTAINERS
+      app.printMovieContent(movieContent, buttonId, currentMovieObj.imdbRating);
+      console.log(currentMovieObj);
+    } else {
+      app.userInput.value = '';
+      app.userInput.placeholder = "try somethin else, bub";
+    }
   })
 }
 //this function appends the movie content to the page. 
@@ -134,6 +151,7 @@ app.printMovieContent = (posterContent, buttonId, imdbRating) => {
     } 
     // this where we will call the confirm movie function (and pass it the app.ratings array),
     // event listener for confirm/go-back buttons
+
     app.confirmMovie(app.ratings);
     // inside that we will likely call a compareMovies function
     console.log(app.ratings);
@@ -146,9 +164,9 @@ app.makeMovieContent = (currentMovieObj) => {
   const { Title, Year, Plot, Poster } = currentMovieObj;
 
   // CREATING CONTAINER FOR PLACEHOLDER BOX WITH QUESTION MARK
-  const placeholderContainer = document.createElement('div');
-  placeholderContainer.classList.add('img-container', 'question-mark')
-  placeholderContainer.textContent = '?';
+  const questionMarkContainer = document.createElement('div');
+  questionMarkContainer.classList.add('img-container', 'question-mark')
+  questionMarkContainer.textContent = '?';
   
   // CREATE AND APPEND POSTER CONTAINER
   const posterContainer = document.createElement('div');
@@ -166,11 +184,11 @@ app.makeMovieContent = (currentMovieObj) => {
   infoContainer.innerHTML = `<h3>${Title}</h3> <p>${Year}</p><p>${Plot}</p>`;
   
   // storing all this generated info in an array, and returning it to the print function
-  const movieContentArray = {
+  const movieContentObject = {
     array: [posterContainer, infoContainer],
-    empty: placeholderContainer
+    empty: questionMarkContainer
   };
-  return movieContentArray;
+  return movieContentObject;
 };
   
   
@@ -178,15 +196,18 @@ app.makeMovieContent = (currentMovieObj) => {
 app.confirmMovie = (bothMovieRatings) => {
   // showing the buttons
   app.overlay.classList.remove('hide');
+  app.form.classList.add('hide');
+  console.log('outside of event listener');
 
   app.overlay.addEventListener('click', function (event) {
     // console.log(event.target);
     const button = event.target;
-    
+  
     if (button.id === 'go-back') {
       // this removes button duplicates from populating
       app.overlay.replaceChildren();
       app.overlay.classList.add('hide');
+      app.form.classList.remove('hide');
       // app.userMovieSelection.replaceChildren();
       app.userInput.value = '';
       console.log('user went back');
@@ -194,6 +215,7 @@ app.confirmMovie = (bothMovieRatings) => {
       bothMovieRatings.pop();
     } else if (button.id === 'confirm'){
       //here is where we would call the app.compareMovies() function, and pass it bothMovieRatings to compare them
+      console.log('again');
       app.compareMovies(bothMovieRatings);
       app.resetGame();
     }
@@ -220,27 +242,25 @@ app.compareMovies = (bothMovieRatings) => {
 // these are global right now
   //work on trying to append them using less code and not creating these elements in global scope
   // maybe try a loop inside scoreMessage function 
-  
-const userScoreTextElement = document.createElement('p');
-const defaultScoreTextElement = document.createElement('p');
 
 app.scoreMessage = (defaultRating, userRating) => {
   //clears p
-  userScoreTextElement.textContent = '';
-  defaultScoreTextElement.textContent = '';
+  app.userScoreCard.textContent = '';
+  app.defaultScoreCard.textContent = '';
 // user movie score elements
-  userScoreTextElement.classList.add('score');
-  userScoreTextElement.textContent = userRating;
+  app.userScoreCard.classList.add('score');
+  app.userScoreCard.textContent = userRating;
 //default movie score elements
-  defaultScoreTextElement.classList.add('score');
-  defaultScoreTextElement.textContent = defaultRating;
+  app.defaultScoreCard.classList.add('score');
+  app.defaultScoreCard.textContent = defaultRating;
 // appending both
-  app.userMovieSelection.appendChild(userScoreTextElement);
-  app.defaultMovieSelection.appendChild(defaultScoreTextElement);
-
+  app.userMovieSelection.appendChild(app.userScoreCard);
+  app.defaultMovieSelection.appendChild(app.defaultScoreCard);
+  console.log('scoreMessage function');
 }
 
 app.resetGame = () => {
+  console.log('reset function');
   app.overlay.replaceChildren();
   app.overlay.classList.add('hide');
   app.form.classList.add('hide');
