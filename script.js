@@ -19,6 +19,9 @@ app.startButton = document.querySelector('.start-button')
 app.form = document.querySelector('form');
 app.userInput = document.querySelector('input');
 app.overlay = document.querySelector('aside');
+//created p's for the score cards
+app.userScoreCard = document.createElement('p');
+app.defaultScoreCard = document.createElement('p');
 
 // EVENT LISTENERS
 
@@ -161,9 +164,9 @@ app.makeMovieContent = (currentMovieObj) => {
   const { Title, Year, Plot, Poster } = currentMovieObj;
 
   // CREATING CONTAINER FOR PLACEHOLDER BOX WITH QUESTION MARK
-  const placeholderContainer = document.createElement('div');
-  placeholderContainer.classList.add('img-container', 'question-mark')
-  placeholderContainer.textContent = '?';
+  const questionMarkContainer = document.createElement('div');
+  questionMarkContainer.classList.add('img-container', 'question-mark')
+  questionMarkContainer.textContent = '?';
   
   // CREATE AND APPEND POSTER CONTAINER
   const posterContainer = document.createElement('div');
@@ -181,11 +184,11 @@ app.makeMovieContent = (currentMovieObj) => {
   infoContainer.innerHTML = `<h3>${Title}</h3> <p>${Year}</p><p>${Plot}</p>`;
   
   // storing all this generated info in an array, and returning it to the print function
-  const movieContentArray = {
+  const movieContentObject = {
     array: [posterContainer, infoContainer],
-    empty: placeholderContainer
+    empty: questionMarkContainer
   };
-  return movieContentArray;
+  return movieContentObject;
 };
   
   
@@ -194,11 +197,12 @@ app.confirmMovie = (bothMovieRatings) => {
   // showing the buttons
   app.overlay.classList.remove('hide');
   app.form.classList.add('hide');
+  console.log('outside of event listener');
 
   app.overlay.addEventListener('click', function (event) {
     // console.log(event.target);
     const button = event.target;
-    
+  
     if (button.id === 'go-back') {
       // this removes button duplicates from populating
       app.overlay.replaceChildren();
@@ -238,28 +242,25 @@ app.compareMovies = (bothMovieRatings) => {
 // these are global right now
   //work on trying to append them using less code and not creating these elements in global scope
   // maybe try a loop inside scoreMessage function 
-  
-const userScoreTextElement = document.createElement('p');
-const defaultScoreTextElement = document.createElement('p');
 
 app.scoreMessage = (defaultRating, userRating) => {
   //clears p
-  userScoreTextElement.textContent = '';
-  defaultScoreTextElement.textContent = '';
+  app.userScoreCard.textContent = '';
+  app.defaultScoreCard.textContent = '';
 // user movie score elements
-  userScoreTextElement.classList.add('score');
-  userScoreTextElement.textContent = userRating;
+  app.userScoreCard.classList.add('score');
+  app.userScoreCard.textContent = userRating;
 //default movie score elements
-  defaultScoreTextElement.classList.add('score');
-  defaultScoreTextElement.textContent = defaultRating;
+  app.defaultScoreCard.classList.add('score');
+  app.defaultScoreCard.textContent = defaultRating;
 // appending both
-  app.userMovieSelection.appendChild(userScoreTextElement);
-  app.defaultMovieSelection.appendChild(defaultScoreTextElement);
+  app.userMovieSelection.appendChild(app.userScoreCard);
+  app.defaultMovieSelection.appendChild(app.defaultScoreCard);
   console.log('scoreMessage function');
 }
 
 app.resetGame = () => {
-  console.log('reset');
+  console.log('reset function');
   app.overlay.replaceChildren();
   app.overlay.classList.add('hide');
   app.form.classList.add('hide');
