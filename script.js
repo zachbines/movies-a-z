@@ -7,12 +7,13 @@ app.init = () => {
   app.cachedSelectors();
   app.pageLoadEvent();
   app.userInputEvent();
+  app.getDefaultMovieTitle();
 }
 
 // Cache existing html selectors we will need for appending
 
 app.cachedSelectors = () => {
-  app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network", "Willy Wonka and the Chocolate Factory", "Heat", "Dirty Dancing"];
+  app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network", "Willy Wonka and the Chocolate Factory", "Heat", "Dirty Dancing", "The Raid: Redemption", "Scott Pilgrim", "Kiki's Delivery Service"];
   
   app.gameContainer = document.querySelector('.game-window');
   app.defaultMovieSelection = document.querySelector('.default-movie');
@@ -21,52 +22,67 @@ app.cachedSelectors = () => {
   app.form = document.querySelector('form');
   app.userInput = document.querySelector('input');
   app.overlay = document.querySelector('aside');
+  app.userScore = document.querySelector('.user-score');
+  app.defaultScore = document.querySelector('.default-score');
+  // console.log(app.userScore);
+  // console.log(app.defaultScore);
 
   //created p's for the score cards
   app.userScoreCard = document.createElement('p');
   app.defaultScoreCard = document.createElement('p');
 }
 
+
 // EVENT LISTENERS
 
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
 app.pageLoadEvent = () => {
   // starts the favMovies array at 0
-  let i = 0;
+  let i = Math.floor(Math.random()*app.favMovies.length);
 
   app.startButton.addEventListener('click', function(){
     // these lines ensure the default movie section and the scores reset after the 'next round' button is clicked
     app.defaultMovieSelection.replaceChildren();
-    setTimeout(() => { app.userInput.focus(); }, 1); // input wouldnt focus without this settimout around it
+    setTimeout(() => { app.userInput.focus(); }, 1); 
+    // input wouldnt focus without this settimout around it
     app.userInput.value = '';
 
     //later used to store the ratings for each movie
     app.ratings = [];
 
+    const currentMovie = app.getDefaultMovieTitle(i);
+
     // the first time the game starts
     if (i === 0) {
       // gets and stores the current default movie choice from our array
-      const currentMovie = app.getDefaultMovieTitle(i);
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
+      setTimeout(() => {this.textContent = 'Next round';}, 301);
       i++;
-      
-      // every subsequent time the user plays. 
-
-      //try making and else if statement 
-    } 
-    // else if () 
-    else {
-      const currentMovie = app.getDefaultMovieTitle(i);
+    } else if (i === 10 || i === 20 || i === 30) {
+      this.textContent = 'Click to Play again!'
+      app.getMovieObject(currentMovie, this.id);
+      i++
+    } else if (i === app.favMovies.length - 1) {
+      // start the array over again
+      app.getMovieObject(currentMovie, this.id);
+      this.textContent = 'Click to Play again!'
+      i = 0;
+    } else {
+      setTimeout(() => {this.textContent = 'Next round';}, 301);
       app.userInput.placeholder = `OK how bout this one? ⤵`;
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
       i++;
     }
-    // hides button upon game initiation 
-    this.classList.add('hide');
+    // hides button upon game initiation
+    this.classList.add('fade-out');
+    setTimeout(() => {
+      this.classList.add('hide');
+      this.classList.remove('fade-out');
+    }, 301);
     //reveals the form
-    app.form.classList.remove('hide');
+    setTimeout(() => {app.form.classList.remove('hide');}, 301);
   })
 }
 
@@ -74,6 +90,9 @@ app.pageLoadEvent = () => {
 app.userInputEvent = () => {
 
   app.form.addEventListener('submit', function(event) {
+    // fade-in animation
+
+
     event.preventDefault();
     // stores the users Movie choice
     const userChoice = app.userInput.value;
@@ -102,6 +121,8 @@ app.userInputEvent = () => {
 // GET MOVIE TITLE
 // THIS FUNCTION RETURNS THE MOVIES FROM ARRAY
 app.getDefaultMovieTitle = (title) => {
+  // const randomizer = Math.floor(Math.random()*app.favMovies.length)
+  // iterates thru the array randomly
   const currentMovieTitle = app.favMovies[title];
   return currentMovieTitle;
 }
@@ -284,9 +305,11 @@ app.resetGame = () => {
   // (1) USER WINS
     // Append text on top of userMovie poster
     // style css to give a celebratory visual cue
+    // Append text that says "YOU WIN"
   // (2) DEFAULT WINS
     // Append text to the userMovie poster
     // style css to get a less celebratory visual cue
+    // Appen text that says "WE WIN"
   // RAINCLOUD OR SUNSHINE STRETCH GOAL
 
 
