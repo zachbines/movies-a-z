@@ -80,6 +80,7 @@ header {
 }
 
 
+
 form {
     display: flex;
     flex-direction: column;
@@ -101,17 +102,23 @@ input {
     margin: 2rem 4rem;
 }
 
+.user-inputs {
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 aside {
-    position: absolute;
-    top: 0;
+    /* position: absolute;
+    top: 0; */
     height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
-    border: 1px solid yellow;
+    /* border: 1px solid yellow; */
     /* background-color: rgba(0, 0, 0, 0.2); */
 }
 

@@ -49,15 +49,22 @@ app.pageLoadEvent = () => {
       const currentMovie = app.getDefaultMovieTitle(i);
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
+      this.textContent = 'Next round';
       i++;
-      
-      // every subsequent time the user plays. 
-
-      //try making and else if statement 
-    } 
-    // else if () 
-    else {
+    } else if (i === 10 || i === 20 || i === 30) {
+      this.textContent = 'Click to Play again!'
       const currentMovie = app.getDefaultMovieTitle(i);
+      app.getMovieObject(currentMovie, this.id);
+      i++
+    } else if (i === app.favMovies.length - 1) {
+      // start the array over again
+      const currentMovie = app.getDefaultMovieTitle(i);
+      app.getMovieObject(currentMovie, this.id);
+      this.textContent = 'Click to Play again!'
+      i = 0;
+    } else {
+      const currentMovie = app.getDefaultMovieTitle(i);
+      this.textContent = 'Next round';
       app.userInput.placeholder = `OK how bout this one? ⤵`;
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
