@@ -12,7 +12,7 @@ app.init = () => {
 // Cache existing html selectors we will need for appending
 
 app.cachedSelectors = () => {
-  app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network"];
+  app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network", "Willy Wonka and the Chocolate Factory", "Heat", "Dirty Dancing"];
   
   app.gameContainer = document.querySelector('.game-window');
   app.defaultMovieSelection = document.querySelector('.default-movie');
@@ -21,6 +21,7 @@ app.cachedSelectors = () => {
   app.form = document.querySelector('form');
   app.userInput = document.querySelector('input');
   app.overlay = document.querySelector('aside');
+
   //created p's for the score cards
   app.userScoreCard = document.createElement('p');
   app.defaultScoreCard = document.createElement('p');
@@ -36,7 +37,9 @@ app.pageLoadEvent = () => {
   app.startButton.addEventListener('click', function(){
     // these lines ensure the default movie section and the scores reset after the 'next round' button is clicked
     app.defaultMovieSelection.replaceChildren();
+    setTimeout(() => { app.userInput.focus(); }, 1); // input wouldnt focus without this settimout around it
     app.userInput.value = '';
+
     //later used to store the ratings for each movie
     app.ratings = [];
 
@@ -49,7 +52,11 @@ app.pageLoadEvent = () => {
       i++;
       
       // every subsequent time the user plays. 
-    } else {
+
+      //try making and else if statement 
+    } 
+    // else if () 
+    else {
       const currentMovie = app.getDefaultMovieTitle(i);
       app.userInput.placeholder = `OK how bout this one? ⤵`;
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
@@ -65,6 +72,7 @@ app.pageLoadEvent = () => {
 
 // Adds event listener to when SECOND SUBMIT BUTTON is pressed with USER MOVIE INPUT value
 app.userInputEvent = () => {
+
   app.form.addEventListener('submit', function(event) {
     event.preventDefault();
     // stores the users Movie choice
@@ -145,8 +153,10 @@ app.printMovieContent = (posterContent, buttonId, imdbRating) => {
     for (let content of posterContent.array) {
       app.defaultMovieSelection.appendChild(content);
     }
-    app.userMovieSelection.appendChild(posterContent.empty)
+    //set timout allows the questionmark to fade in after the default poster
+    setTimeout(() => { app.userMovieSelection.appendChild(posterContent.empty); }, 1000);   
   } else {
+
     for (let content of posterContent.array) {
       app.userMovieSelection.appendChild(content);
     } 
@@ -198,7 +208,6 @@ app.confirmMovie = (bothMovieRatings) => {
   // showing the buttons
   app.overlay.classList.remove('hide');
   app.overlay.childNodes[1].focus();
-  console.log(app.overlay);
   app.form.classList.add('hide');
   console.log('outside of event listener');
 
@@ -226,8 +235,8 @@ app.confirmMovie = (bothMovieRatings) => {
 }
 
 app.compareMovies = (bothMovieRatings) => {
-  const defaultMovieRating = parseFloat(bothMovieRatings[0][1]);
-  const userMovieRating = parseFloat(bothMovieRatings[1][1]);
+  const defaultMovieRating = parseFloat(bothMovieRatings[0][1]).toFixed(1);
+  const userMovieRating = parseFloat(bothMovieRatings[1][1]).toFixed(1);
 
   if (defaultMovieRating < userMovieRating) {
     console.log('User wins');
@@ -286,8 +295,10 @@ app.init();
 // target genre:
   // we want the user to be limited to choosing a film that is the same genre as the default movie. 
 
+
 // STILL LEFT TO DO FOR MVP:
   // STYLE/SIZE POSTER CONTAINER BOXES ACCORDINGLY
   // MAKE APP RESPONSIVE FOR MOBILE (MAYBE making it so that at a certain screen size, when the user clicks the movie, all the info about appears to save space on screen)
+  // make the game restartable
   // 
 

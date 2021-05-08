@@ -63,7 +63,7 @@ aside button {
 button:hover,
 button:focus {
     color: goldenrod;
-    background: rgba(255,255,255,0.1)
+    background: black;
 }
 
 
@@ -88,6 +88,7 @@ aside {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 100;
     /* background-color: rgba(0, 0, 0, 0.2); */
 }
 
@@ -114,6 +115,7 @@ input {
 .movie {
     margin: 20px;
     width: calc(50% - 40px);
+    position: relative;
 }
 
 .question-mark {
@@ -122,6 +124,7 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: fadein 3s ease 1;
 }
 
 .img-container {
@@ -129,6 +132,7 @@ input {
     border: 10px dotted goldenrod;
     z-index: -1;
     height: 600px;
+    animation: fadein 1s ease 1;
 }
 
 .img-container img {
@@ -139,6 +143,7 @@ input {
     max-width: 100%;
     object-fit: contain;
     display: block;
+    
 }
 
 .info-container p:nth-of-type(1) ,
@@ -177,7 +182,7 @@ footer {
 
 .score {
     font-family: 'Coming Soon', cursive;
-    position: relative;
+    position: absolute;
     font-size: 10rem;
     color: black;
     left: 25%;
@@ -190,4 +195,30 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: flip 2s ease 1;
+    transform: rotateZ(-20deg);
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes flip {
+    0% {
+        transform: rotateX(-90deg) scale(1);
+    }
+
+    80% {
+        transform: rotateX(0deg) scale(1.4);
+    }
+
+    100% {
+        transform: rotateX(0deg) scale(1) rotateZ(-20deg);
+    }
 }
