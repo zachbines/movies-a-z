@@ -111,6 +111,7 @@ aside {
     justify-content: center;
     align-items: center;
     z-index: 100;
+    border: 1px solid yellow;
     /* background-color: rgba(0, 0, 0, 0.2); */
 }
 
@@ -128,6 +129,13 @@ input {
     padding: 1rem 2rem;
     text-align: center;
 }
+
+.instructions {
+    font-weight: 600;
+    line-height: 4rem;
+    letter-spacing: 1.5px;
+}
+
 
 .game-window {
     display: flex;
