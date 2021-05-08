@@ -38,7 +38,7 @@ app.cachedSelectors = () => {
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
 app.pageLoadEvent = () => {
   // starts the favMovies array at 0
-  let i = 0;
+  let i = Math.floor(Math.random()*app.favMovies.length);
 
   app.startButton.addEventListener('click', function(){
     // these lines ensure the default movie section and the scores reset after the 'next round' button is clicked
@@ -50,27 +50,25 @@ app.pageLoadEvent = () => {
     //later used to store the ratings for each movie
     app.ratings = [];
 
+    const currentMovie = app.getDefaultMovieTitle(i);
+
     // the first time the game starts
     if (i === 0) {
       // gets and stores the current default movie choice from our array
-      const currentMovie = app.getDefaultMovieTitle(i);
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
       setTimeout(() => {this.textContent = 'Next round';}, 301);
       i++;
     } else if (i === 10 || i === 20 || i === 30) {
       this.textContent = 'Click to Play again!'
-      const currentMovie = app.getDefaultMovieTitle(i);
       app.getMovieObject(currentMovie, this.id);
       i++
     } else if (i === app.favMovies.length - 1) {
       // start the array over again
-      const currentMovie = app.getDefaultMovieTitle(i);
       app.getMovieObject(currentMovie, this.id);
       this.textContent = 'Click to Play again!'
       i = 0;
     } else {
-      const currentMovie = app.getDefaultMovieTitle(i);
       setTimeout(() => {this.textContent = 'Next round';}, 301);
       app.userInput.placeholder = `OK how bout this one? ⤵`;
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
@@ -123,9 +121,9 @@ app.userInputEvent = () => {
 // GET MOVIE TITLE
 // THIS FUNCTION RETURNS THE MOVIES FROM ARRAY
 app.getDefaultMovieTitle = (title) => {
-  const randomizer = Math.floor(Math.random()*app.favMovies.length)
+  // const randomizer = Math.floor(Math.random()*app.favMovies.length)
   // iterates thru the array randomly
-  const currentMovieTitle = app.favMovies[randomizer];
+  const currentMovieTitle = app.favMovies[title];
   return currentMovieTitle;
 }
 
