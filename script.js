@@ -4,24 +4,27 @@ const app = {};
 app.init = () => {
   console.log("this is the init function")
   //add event listeners in fuctions (maybe we will eventually put them all into one function)
+  app.cachedSelectors();
   app.pageLoadEvent();
   app.userInputEvent();
 }
 
 // Cache existing html selectors we will need for appending
 
-app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network"];
-
-app.gameContainer = document.querySelector('.game-window');
-app.defaultMovieSelection = document.querySelector('.default-movie');
-app.userMovieSelection = document.querySelector('.user-movie');
-app.startButton = document.querySelector('.start-button')
-app.form = document.querySelector('form');
-app.userInput = document.querySelector('input');
-app.overlay = document.querySelector('aside');
-//created p's for the score cards
-app.userScoreCard = document.createElement('p');
-app.defaultScoreCard = document.createElement('p');
+app.cachedSelectors = () => {
+  app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network"];
+  
+  app.gameContainer = document.querySelector('.game-window');
+  app.defaultMovieSelection = document.querySelector('.default-movie');
+  app.userMovieSelection = document.querySelector('.user-movie');
+  app.startButton = document.querySelector('.start-button')
+  app.form = document.querySelector('form');
+  app.userInput = document.querySelector('input');
+  app.overlay = document.querySelector('aside');
+  //created p's for the score cards
+  app.userScoreCard = document.createElement('p');
+  app.defaultScoreCard = document.createElement('p');
+}
 
 // EVENT LISTENERS
 
@@ -31,7 +34,7 @@ app.pageLoadEvent = () => {
   let i = 0;
 
   app.startButton.addEventListener('click', function(){
-    // these lines ensure the default movie section and the scores reset after the start button is clicked
+    // these lines ensure the default movie section and the scores reset after the 'next round' button is clicked
     app.defaultMovieSelection.replaceChildren();
     app.userInput.value = '';
     //later used to store the ratings for each movie
@@ -44,7 +47,8 @@ app.pageLoadEvent = () => {
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
       i++;
-
+      
+      // every subsequent time the user plays. 
     } else {
       const currentMovie = app.getDefaultMovieTitle(i);
       app.userInput.placeholder = `OK how bout this one? ⤵`;
@@ -87,11 +91,8 @@ app.userInputEvent = () => {
   })
 }
 
-// THIS WILL BE THE FUNCTION THAT WILL PRINT THE INITIAL MOVIE POSTER (using the array of movie titles we've created)
-
 // GET MOVIE TITLE
-// THIS FUNCTION RETURNS FIRST MOVIE FROM ARRAY
-
+// THIS FUNCTION RETURNS THE MOVIES FROM ARRAY
 app.getDefaultMovieTitle = (title) => {
   const currentMovieTitle = app.favMovies[title];
   return currentMovieTitle;
@@ -196,6 +197,8 @@ app.makeMovieContent = (currentMovieObj) => {
 app.confirmMovie = (bothMovieRatings) => {
   // showing the buttons
   app.overlay.classList.remove('hide');
+  app.overlay.childNodes[1].focus();
+  console.log(app.overlay);
   app.form.classList.add('hide');
   console.log('outside of event listener');
 
@@ -283,9 +286,8 @@ app.init();
 // target genre:
   // we want the user to be limited to choosing a film that is the same genre as the default movie. 
 
-// error handling:
-  // stop overlay buttons from appending one after another when clicked or enter is clicked.
-  // (maybe just hide the form and put the aside where the form is)
-
-  // how to respond to a movie that doesnt exist (spelling mistakes etc.)
+// STILL LEFT TO DO FOR MVP:
+  // STYLE/SIZE POSTER CONTAINER BOXES ACCORDINGLY
+  // MAKE APP RESPONSIVE FOR MOBILE (MAYBE making it so that at a certain screen size, when the user clicks the movie, all the info about appears to save space on screen)
+  // 
 
