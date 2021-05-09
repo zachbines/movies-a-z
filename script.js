@@ -13,7 +13,10 @@ app.init = () => {
 
 app.cachedSelectors = () => {
   app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network", "Willy Wonka", "Heat", "Dirty Dancing", "The Raid: Redemption", "Scott Pilgrim", "Kiki's Delivery Service", "When Harry Met Sally", "Spaceballs", "The Notebook", "Dumb and Dumber", "Ferris Bueller's Day Off", "Face/Off"];
-  
+
+  app.instructions = document.querySelector('.instructions')
+  app.instructionsChildren = document.querySelector('.instructions p');
+  app.hideInstructionsButton = document.querySelector('#hide-instructions');
   app.gameContainer = document.querySelector('.game-window');
   app.defaultMovieSelection = document.querySelector('.default-movie');
   app.userMovieSelection = document.querySelector('.user-movie');
@@ -28,7 +31,9 @@ app.cachedSelectors = () => {
   //created p's for the score cards
   app.userScoreCard = document.createElement('p');
   app.defaultScoreCard = document.createElement('p');
+  // console.log(app.instructionsChildren);
 }
+
 
 // EVENT LISTENERS
 
@@ -38,7 +43,19 @@ app.eventListeners = () => {
   let i = Math.floor(Math.random() * (app.favMovies.length - 1));
   let j = i;
 
+
+  app.hideInstructionsButton.addEventListener('click', function(){
+    
+    if (this.textContent === 'Hide ↑') {
+      app.instructions.classList.add('hide');
+      this.textContent = 'Unhide ↓';
+    } else {
+      this.textContent = 'Hide ↑'
+      app.instructions.classList.remove('hide');
+    }
+  })
   app.startButton.classList.remove('hide');
+  
   app.startButton.addEventListener('click', function(){
     // these lines ensure the default movie section and the scores reset after the 'next round' button is clicked
     app.arrowContainer.replaceChildren();
