@@ -13,7 +13,7 @@ app.init = () => {
 // Cache existing html selectors we will need for appending
 
 app.cachedSelectors = () => {
-  app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network", "Willy Wonka and the Chocolate Factory", "Heat", "Dirty Dancing", "The Raid: Redemption", "Scott Pilgrim", "Kiki's Delivery Service"];
+  app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network", "Willy Wonka", "Heat", "Dirty Dancing", "The Raid: Redemption", "Scott Pilgrim", "Kiki's Delivery Service"];
   
   app.gameContainer = document.querySelector('.game-window');
   app.defaultMovieSelection = document.querySelector('.default-movie');
@@ -24,24 +24,23 @@ app.cachedSelectors = () => {
   app.overlay = document.querySelector('aside');
   app.userScore = document.querySelector('.user-score');
   app.defaultScore = document.querySelector('.default-score');
-  // console.log(app.userScore);
-  // console.log(app.defaultScore);
-
+  app.arrowContainer = document.querySelector('.arrow-container');
   //created p's for the score cards
   app.userScoreCard = document.createElement('p');
   app.defaultScoreCard = document.createElement('p');
 }
 
-
 // EVENT LISTENERS
 
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
 app.pageLoadEvent = () => {
-  // starts the favMovies array at 0
+  // puts a random index number in the variable i
   let i = Math.floor(Math.random()*app.favMovies.length);
+  let j = i;
 
   app.startButton.addEventListener('click', function(){
     // these lines ensure the default movie section and the scores reset after the 'next round' button is clicked
+    app.arrowContainer.replaceChildren();
     app.defaultMovieSelection.replaceChildren();
     setTimeout(() => { app.userInput.focus(); }, 1); 
     // input wouldnt focus without this settimout around it
@@ -50,30 +49,26 @@ app.pageLoadEvent = () => {
     //later used to store the ratings for each movie
     app.ratings = [];
 
-    const currentMovie = app.getDefaultMovieTitle(i);
+    const currentMovie = app.getDefaultMovieTitle(j);
 
     // the first time the game starts
-    if (i === 0) {
+    if (i === j) {
       // gets and stores the current default movie choice from our array
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
       setTimeout(() => {this.textContent = 'Next round';}, 301);
-      i++;
-    } else if (i === 10 || i === 20 || i === 30) {
-      this.textContent = 'Click to Play again!'
-      app.getMovieObject(currentMovie, this.id);
-      i++
+      j++;
     } else if (i === app.favMovies.length - 1) {
       // start the array over again
       app.getMovieObject(currentMovie, this.id);
       this.textContent = 'Click to Play again!'
-      i = 0;
+      j = 0;
     } else {
       setTimeout(() => {this.textContent = 'Next round';}, 301);
       app.userInput.placeholder = `OK how bout this one? ⤵`;
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
-      i++;
+      j++;
     }
     // hides button upon game initiation
     this.classList.add('fade-out');
@@ -259,17 +254,21 @@ app.compareMovies = (bothMovieRatings) => {
   const defaultMovieRating = parseFloat(bothMovieRatings[0][1]).toFixed(1);
   const userMovieRating = parseFloat(bothMovieRatings[1][1]).toFixed(1);
 
+  
+  setTimeout(() => { app.scoreMessage(defaultMovieRating, userMovieRating); }, 1200);
+
   if (defaultMovieRating < userMovieRating) {
     console.log('User wins');
-    app.scoreMessage(defaultMovieRating, userMovieRating); 
-
+    app.arrowContainer.innerHTML = '<i class="fas fa-greater-than win">YEP</i> ';
+    
   } else if (defaultMovieRating > userMovieRating) {
     console.log('We win'); 
-    app.scoreMessage(defaultMovieRating, userMovieRating); 
-    
+    // app.scoreMessage(defaultMovieRating, userMovieRating); 
+    app.arrowContainer.innerHTML = '<i class="fas fa-greater-than lose"></i> ';
+
   } else if (defaultMovieRating === userMovieRating) {
     console.log('Would you look at that');
-
+    app.arrowContainer.innerHTML = '<i class="fas fa-equals win"></i>';
   }
 }
 // these are global right now
@@ -290,6 +289,7 @@ app.scoreMessage = (defaultRating, userRating) => {
   app.userMovieSelection.appendChild(app.userScoreCard);
   app.defaultMovieSelection.appendChild(app.defaultScoreCard);
   console.log('scoreMessage function');
+
 }
 
 app.resetGame = () => {
