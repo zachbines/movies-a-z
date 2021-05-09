@@ -35,7 +35,7 @@ app.cachedSelectors = () => {
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
 app.eventListeners = () => {
   // puts a random index number in the variable i
-  let i = Math.floor(Math.random() * app.favMovies.length);
+  let i = Math.floor(Math.random() * (app.favMovies.length - 1));
   let j = i;
   // app.startButton.classList.remove('hide');
 
@@ -60,7 +60,7 @@ app.eventListeners = () => {
 
 
     const currentMovie = app.getDefaultMovieTitle(j);
-    
+    console.log(j);
     // the first time the game starts
     if (i === j) {
       // gets and stores the current default movie choice from our array
@@ -120,17 +120,9 @@ app.eventListeners = () => {
   })
 }
 
-// Adds event listener to when SECOND SUBMIT BUTTON is pressed with USER MOVIE INPUT value
-app.userInputEvent = () => {
-
-
-}
-
 // GET MOVIE TITLE
 // THIS FUNCTION RETURNS THE MOVIES FROM ARRAY
 app.getDefaultMovieTitle = (title) => {
-  // const randomizer = Math.floor(Math.random()*app.favMovies.length)
-  // iterates thru the array randomly
   const currentMovieTitle = app.favMovies[title];
   return currentMovieTitle;
 }
@@ -180,21 +172,17 @@ app.printMovieContent = (posterContent, buttonId, imdbRating) => {
   
   if (buttonId === "start-button") {
     for (let content of posterContent.array) {
-      app.defaultMovieSelection.appendChild(content);
+      // these settimouts are to account for API load time.
+      setTimeout(() => { app.defaultMovieSelection.appendChild(content); }, 200); 
     }
-    //set timout allows the questionmark to fade in after the default poster
     setTimeout(() => { app.userMovieSelection.appendChild(posterContent.empty); }, 1000);   
   } else {
-
     for (let content of posterContent.array) {
-      app.userMovieSelection.appendChild(content);
+      setTimeout(() => { app.userMovieSelection.appendChild(content); }, 200); 
     } 
-    // this where we will call the confirm movie function (and pass it the app.ratings array),
-    // event listener for confirm/go-back buttons
 
     app.confirmMovie(app.ratings);
-    // inside that we will likely call a compareMovies function
-    // console.log(app.ratings);
+
   }
 }
 
@@ -263,36 +251,11 @@ app.confirmMovie = (bothMovieRatings) => {
   })
 }
 
-app.compareMovies = (bothMovieRatings) => {
-  const defaultMovieRating = parseFloat(bothMovieRatings[0][1]).toFixed(1);
-  const userMovieRating = parseFloat(bothMovieRatings[1][1]).toFixed(1);
-  const message = document.createTextNode("");
-  console.log(message);
-
-  if (defaultMovieRating < userMovieRating) {
-    app.arrowContainer.innerHTML = `
-    <i class="fas fa-greater-than win"></i>`;
-    message.textContent = 'Nice One!';
-    
-  } else if (defaultMovieRating > userMovieRating) {
-    console.log('We win'); 
-    // app.scoreMessage(defaultMovieRating, userMovieRating); 
-    app.arrowContainer.innerHTML = `
-    <i class="fas fa-greater-than lose"></i>`;
-    message.textContent = 'Not Quite!';
-
-  } else if (defaultMovieRating === userMovieRating) {
-    console.log('Would you look at that');
-    app.arrowContainer.innerHTML = '<i class="fas fa-equals win"></i>';
-    message.textContent = 'Wouldja look at that!';
-  }
-
-  setTimeout(() => { app.scoreMessage(defaultMovieRating, userMovieRating, message); }, 2000);   
-
+app.createMessages = (i) => {
+  const winMessage = ["You know your stuff!", "Nice One!", "How did you know?!"];
+  const loseMessage = ["So bad it's good, perhaps?", "Not Quite!", "You have failed us."];
+  return [winMessage[i], loseMessage[i]];
 }
-// these are global right now
-  //work on trying to append them using less code and not creating these elements in global scope
-  // maybe try a loop inside scoreMessage function 
 
 app.scoreMessage = (defaultRating, userRating, message) => {
 
@@ -301,16 +264,46 @@ app.scoreMessage = (defaultRating, userRating, message) => {
   //clears p
   app.userScoreCard.textContent = '';
   app.defaultScoreCard.textContent = '';
-// user movie score elements
+  // user movie score elements
   app.userScoreCard.classList.add('score');
   app.userScoreCard.textContent = userRating;
-//default movie score elements
+  //default movie score elements
   app.defaultScoreCard.classList.add('score');
   app.defaultScoreCard.textContent = defaultRating;
-// appending both
+  // appending both
   app.userMovieSelection.appendChild(app.userScoreCard);
   app.defaultMovieSelection.appendChild(app.defaultScoreCard);
   console.log('scoreMessage function');
+}
+
+app.compareMovies = (bothMovieRatings) => {
+  const defaultMovieRating = parseFloat(bothMovieRatings[0][1]).toFixed(1);
+  const userMovieRating = parseFloat(bothMovieRatings[1][1]).toFixed(1);
+
+  //creating the message to the user
+  let i = Math.floor(Math.random() * 3);
+  const messageContent = app.createMessages(i);
+  const message = document.createTextNode("");
+
+  if (defaultMovieRating < userMovieRating) {
+    app.arrowContainer.innerHTML = `
+    <i class="fas fa-greater-than win"></i>`;
+    message.textContent = messageContent[0];
+    
+  } else if (defaultMovieRating > userMovieRating) {
+    console.log('We win'); 
+    // app.scoreMessage(defaultMovieRating, userMovieRating); 
+    app.arrowContainer.innerHTML = `
+    <i class="fas fa-greater-than lose"></i>`;
+    message.textContent = messageContent[1];
+
+  } else if (defaultMovieRating === userMovieRating) {
+    console.log('Would you look at that');
+    app.arrowContainer.innerHTML = '<i class="fas fa-equals win"></i>';
+    message.textContent = 'Wouldja look at that!';
+  }
+
+  setTimeout(() => { app.scoreMessage(defaultMovieRating, userMovieRating, message); }, 2000);   
 
 }
 
