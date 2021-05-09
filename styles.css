@@ -48,7 +48,7 @@ h2 {
 
 .name {
     font-family: 'Coming Soon', cursive;
-    font-size: 4rem;
+    font-size: 2rem;
 }
 
 aside button {
@@ -198,10 +198,7 @@ aside {
     box-shadow: 10px 10px 10px black;
 }
 
-.question-mark.img-container {
-    /* position: relative; */
-    border: 0;
-    /* z-index: -1; */
+.question-mark{
     font-family: 'Lora', serif;
     font-size: 30rem;
     text-shadow: 10px 10px 10px black, -3px 0 10px black;
@@ -453,10 +450,10 @@ to this targetted class, we add outer html that makes our img clickable (
     }
 
     .score {
-        font-size: 5.5rem;
-        width: 125px;
-        height: 125px;
-        left: 48%;
+        font-size: 5rem;
+        width: 110px;
+        height: 110px;
+        left: 49%;
         top: 18%;
     }
 
