@@ -37,15 +37,16 @@ app.eventListeners = () => {
   // puts a random index number in the variable i
   let i = Math.floor(Math.random() * (app.favMovies.length - 1));
   let j = i;
-  // app.startButton.classList.remove('hide');
 
+  app.startButton.classList.remove('hide');
   app.startButton.addEventListener('click', function(){
     // these lines ensure the default movie section and the scores reset after the 'next round' button is clicked
     app.arrowContainer.replaceChildren();
     app.defaultMovieSelection.replaceChildren();
     app.messagePara.textContent = '';
-    setTimeout(() => { app.userInput.focus(); }, 1); 
-    // input wouldnt focus without this settimout around it
+    // input wouldnt focus without this setTimout around it
+    setTimeout(() => { app.userInput.focus(); }, 10); 
+
     app.userInput.value = '';
 
     //will store the ratings for each movie/clear the array.
@@ -57,8 +58,7 @@ app.eventListeners = () => {
       top: mainTop,
       behavior: "smooth"
     });
-
-
+    
     const currentMovie = app.getDefaultMovieTitle(j);
     console.log(j);
     // the first time the game starts
@@ -82,11 +82,13 @@ app.eventListeners = () => {
       app.getMovieObject(currentMovie, this.id);
       j++;
     }
+
     // hides button upon game initiation
     this.classList.add('fade-out');
+
     setTimeout(() => {
-      this.classList.add('hide');
       this.classList.remove('fade-out');
+      this.classList.add('hide');
     }, 301);
     //reveals the form
     setTimeout(() => {app.form.classList.remove('hide');}, 301);
@@ -175,8 +177,10 @@ app.printMovieContent = (posterContent, buttonId, imdbRating) => {
       // these settimouts are to account for API load time.
       setTimeout(() => { app.defaultMovieSelection.appendChild(content); }, 200); 
     }
+    // the question mark
     setTimeout(() => { app.userMovieSelection.appendChild(posterContent.empty); }, 1000);   
   } else {
+    // the users movie choice 
     for (let content of posterContent.array) {
       setTimeout(() => { app.userMovieSelection.appendChild(content); }, 200); 
     } 
@@ -312,8 +316,10 @@ app.resetGame = () => {
   app.overlay.replaceChildren();
   app.overlay.classList.add('hide');
   app.form.classList.add('hide');
-  app.startButton.classList.remove('hide');
-  app.startButton.textContent = 'Next round';
+  setTimeout(() => { 
+    app.startButton.classList.add('fade-in');
+    app.startButton.classList.remove('hide'); 
+  }, 3000)
   app.messagePara.classList.remove('fade-in');
 }
 
