@@ -6,7 +6,6 @@ app.init = () => {
   //add event listeners in fuctions (maybe we will eventually put them all into one function)
   app.cachedSelectors();
   app.eventListeners();
-  // app.userInputEvent();
   app.getDefaultMovieTitle();
 }
 
@@ -38,6 +37,7 @@ app.eventListeners = () => {
   // puts a random index number in the variable i
   let i = Math.floor(Math.random() * app.favMovies.length);
   let j = i;
+  // app.startButton.classList.remove('hide');
 
   app.startButton.addEventListener('click', function(){
     // these lines ensure the default movie section and the scores reset after the 'next round' button is clicked

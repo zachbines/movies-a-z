@@ -168,21 +168,22 @@ input {
 .question-mark {
     font-family: 'Lora', serif;
     font-size: 30rem;
+    text-shadow: 10px 10px 10px black, -3px 0 10px black;
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: fadein 3s ease 1;
     margin-top: 100px;
+    animation: fadein 3s ease 1;
 }
 
 .img-container {
     /* border: 10px dotted goldenrod; */
     z-index: -1;
     /* height: 700px; */
-    animation: fadein 1s ease 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: fadein 1s ease 1;
 }
 
 .img-container img {
@@ -199,7 +200,6 @@ input {
     border-radius: 10px;
     padding: 0.5rem 3rem 2rem 3rem;
     margin-top: 1rem;
-    /* max-width: 480px; */
 }
 
 .info-container p:nth-of-type(1) ,
@@ -255,8 +255,8 @@ footer {
     position: absolute;
     font-size: 7rem;
     color: black;
-    left: 25%;
-    bottom: 60%;
+    left: 39%;
+    top: -8%;
     width: 150px;
     height: 150px;
     text-align: center;
@@ -285,10 +285,10 @@ footer {
     font-size: 5rem;
     color: white;
     transform: scale(2);
-    position: absolute;
+    /* position: absolute;
     top: 45%;
     left: -36px;
-    color: #b3d4fc;
+    color: #b3d4fc; */
 }
 
 .win {
