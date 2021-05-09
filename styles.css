@@ -71,7 +71,6 @@ main {
 }
 
 header {
-    border-radius: 30px;
     padding: 0 5rem;
     margin-top: 2rem;
 }
@@ -89,18 +88,19 @@ input {
     border-radius: 10px;
     color:white;
     text-align: center;
-    border: 5px solid skyblue;
 }
 
 button {
     margin-top: 5px;
     padding: 1.5rem 3rem;
     transition: all 200ms ease;
+    border: 5px solid skyblue;
 }
 
 input {
     padding: 1rem 2rem;
     margin: 2rem 4rem;
+    border: 2px solid skyblue;
 }
 
 input::placeholder {
@@ -108,7 +108,7 @@ input::placeholder {
 }
 
 .user-window {
-    height: 280px;
+    height: 250px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -144,11 +144,11 @@ aside {
     letter-spacing: 1.5px;
 }
 
-#hide-instructions {
+.hide-instructions {
     border: none;
-    font-family: 'Coming Soon', cursive;
-    background: chocolate;
-    padding: 0.5rem;
+    background: skyblue;
+    color: black;
+    padding: 1rem 1.5rem;
     text-transform: uppercase;
 }
 
@@ -176,9 +176,7 @@ aside {
 }
 
 .img-container {
-    /* border: 10px dotted goldenrod; */
-    z-index: -1;
-    /* height: 700px; */
+    min-width: 14rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -188,13 +186,13 @@ aside {
 .img-container img {
     border: 10px dotted goldenrod;
     max-height: 100%;
-    /* height: 100%; */
     width: 100%;
     max-width: 480px;
     object-fit: contain;
 }
 
 .info-container {
+    min-width: 14rem;
     background-color: rgba(33, 33, 33, 0.6);
     border-radius: 10px;
     padding: 0.5rem 3rem 2rem 3rem;
@@ -255,7 +253,7 @@ footer {
     font-size: 7rem;
     color: black;
     left: 39%;
-    top: -8%;
+    top: 15%;
     width: 150px;
     height: 150px;
     text-align: center;
@@ -284,10 +282,6 @@ footer {
     font-size: 5rem;
     color: white;
     transform: scale(2);
-    /* position: absolute;
-    top: 45%;
-    left: -36px;
-    color: #b3d4fc; */
 }
 
 .win {
@@ -373,7 +367,7 @@ to this targetted class, we add outer html that makes our img clickable (
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 /* @media only screen and (min-width: 1200px) {...}  */
 
-@media only screen and (max-width: 840px){
+@media only screen and (max-width: 1050px){
     body {
         font-size: 1.5rem;
     }
@@ -396,30 +390,34 @@ to this targetted class, we add outer html that makes our img clickable (
         letter-spacing: 1px;
     }
 
-    button,
+    button {
+        border: 5px solid rgba(220, 101, 101, 1);
+    }
+
     input {
-        border: 5px solid red;
-        padding: 1rem 1rem;
+        border: 2px solid rgba(220, 101, 101, 1);
     }
 
     .user-window {
-        height: 150px;
+        height: 200px;
+        margin-top: 1rem;
     }
 
     .question-mark {
         font-size: 20rem;
+        margin-top: 75px;
     }
 
     .message {
-        font-size: 3.5rem;
+        font-size: 4rem;
     }
 
     .score {
-        font-size: 3rem;
-        width: 100px;
-        height: 100px;
-        top: 0%;
-        left: 30%;
+        font-size: 5.5rem;
+        width: 125px;
+        height: 125px;
+        left: 48%;
+        top: 18%;
     }
 
     .info-container p:nth-of-type(1),
@@ -441,5 +439,50 @@ to this targetted class, we add outer html that makes our img clickable (
     .fa-equals {
         font-size: 3.5rem;
     }
+}
+
+@media only screen and (max-width: 600px){
+    h1 {
+        font-size: 3rem;
+    }
+
+    .name {
+        font-size: 1.8rem;
+    }
+    
+    .hide-instructions {
+       padding: 0.8rem 1rem;
+    }
+
+    button,
+    input {
+        border: 5px solid rgba(63, 191, 123, 1);
+        padding: 1rem 1rem;
+    }
+
+    button {
+        padding: 1rem 1rem;
+    }
+
+    input {
+        padding: 8px 1px;
+    }
+
+    .question-mark {
+        font-size: 17rem;
+        margin-top: 50px;
+    }
+
+    .message {
+        font-size: 2.7rem;
+    }
+
+    .score {
+        font-size: 3.5rem;
+        width: 90px;
+        height: 90px;
+    }
+
+
 
 }

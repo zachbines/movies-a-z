@@ -46,11 +46,11 @@ app.eventListeners = () => {
 
   app.hideInstructionsButton.addEventListener('click', function(){
     
-    if (this.textContent === 'Hide instructions') {
+    if (this.textContent === 'Hide ↑') {
       app.instructions.classList.add('hide');
-      this.textContent = 'Unhide instructions';
+      this.textContent = 'Unhide ↓';
     } else {
-      this.textContent = 'Hide instructions'
+      this.textContent = 'Hide ↑'
       app.instructions.classList.remove('hide');
     }
   })
