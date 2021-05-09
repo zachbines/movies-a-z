@@ -51,15 +51,6 @@ h2 {
     font-size: 4rem;
 }
 
-button {
-    border: 5px solid skyblue;
-    border-radius: 10px;
-    background-color: transparent;
-    color: white;
-    margin-top: 5px;
-    padding: 1.5rem 3rem;
-    transition: all 200ms ease;
-}
 
 aside button {
     box-shadow: 0 0 1rem black;
@@ -92,18 +83,28 @@ form {
     animation: fadein 300ms ease 1;
 }
 
-input::placeholder {
-    opacity: 0.8;
-}
-
+button,
 input {
     background-color: transparent;
     border-radius: 10px;
-    color: white;
-    border: 5px solid skyblue;
-    padding: 1rem 2rem;
+    color:white;
     text-align: center;
+    border: 5px solid skyblue;
+}
+
+button {
+    margin-top: 5px;
+    padding: 1.5rem 3rem;
+    transition: all 200ms ease;
+}
+
+input {
+    padding: 1rem 2rem;
     margin: 2rem 4rem;
+}
+
+input::placeholder {
+    opacity: 0.8;
 }
 
 .user-window {
@@ -142,16 +143,6 @@ aside {
     line-height: 4rem;
     letter-spacing: 1.5px;
 }
-
-input {
-    background-color: transparent;
-    border-radius: 10px;
-    color: white;
-    border: 5px solid skyblue;
-    padding: 1rem 2rem;
-    text-align: center;
-}
-
 
 .game-window {
     display: flex;
@@ -354,5 +345,57 @@ footer {
 /* 
 at a certain width, we make a class called mobile which has already been targetted in js. 
 to this targetted class, we add outer html that makes our img clickable (
-
  */
+
+
+ /* MEDIA QUERIES */
+
+  /* Extra small devices (phones, 600px and down) */
+/* @media only screen and (max-width: 600px) {...} */
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+/* @media only screen and (min-width: 600px) {...} */
+
+/* Medium devices (landscape tablets, 768px and up) */
+/* @media only screen and (min-width: 768px) {...} */
+
+/* Large devices (laptops/desktops, 992px and up) */
+/* @media only screen and (min-width: 992px) {...} */
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+/* @media only screen and (min-width: 1200px) {...}  */
+
+@media only screen and (max-width: 840px){
+    body {
+        font-size: 1.5rem;
+    }
+
+    h1 {
+        font-size: 4rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .name {
+        font-size: 2rem;
+    }
+
+    .instructions {
+        font-size: 1.5rem;
+        line-height: 3rem;
+        letter-spacing: 1px;
+    }
+
+    button,
+    input {
+        border: 5px solid red;
+        padding: 1rem 1rem;
+    }
+
+    .question-mark {
+        font-size: 20rem;
+    }
+
+}
