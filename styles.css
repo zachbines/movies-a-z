@@ -107,12 +107,22 @@ input {
     margin: 2rem 4rem;
 }
 
-.user-inputs {
+.user-window {
     height: 280px;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+/* dynamically added */
+.user-window p {
+    margin-top: 20px;
+    font-size: 5rem;
+    font-weight: bold;
+    text-align: center;
+    animation: fadein 500ms ease 1;
 }
 
 .user-score {
@@ -244,10 +254,11 @@ footer {
 /* regarding the spinning greater than arrow */
 .arrow-container {
     display: flex;
+    text-align: center;
     flex-direction: column;
     justify-content: center;
     height: 600px;
-
+    position: relative;
 }
 
 .fa-greater-than,
