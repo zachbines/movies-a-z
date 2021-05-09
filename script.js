@@ -5,15 +5,15 @@ app.init = () => {
   console.log("this is the init function")
   //add event listeners in fuctions (maybe we will eventually put them all into one function)
   app.cachedSelectors();
-  app.pageLoadEvent();
-  app.userInputEvent();
+  app.eventListeners();
+  // app.userInputEvent();
   app.getDefaultMovieTitle();
 }
 
 // Cache existing html selectors we will need for appending
 
 app.cachedSelectors = () => {
-  app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network", "Willy Wonka", "Heat", "Dirty Dancing", "The Raid: Redemption", "Scott Pilgrim", "Kiki's Delivery Service"];
+  app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network", "Willy Wonka", "Heat", "Dirty Dancing", "The Raid: Redemption", "Scott Pilgrim", "Kiki's Delivery Service", "When Harry Met Sally", "Spaceballs", "The Notebook", "Dumb and Dumber", "Ferris Bueller's Day Off", "Face/Off"];
   
   app.gameContainer = document.querySelector('.game-window');
   app.defaultMovieSelection = document.querySelector('.default-movie');
@@ -21,7 +21,7 @@ app.cachedSelectors = () => {
   app.startButton = document.querySelector('.start-button')
   app.form = document.querySelector('form');
   app.userInput = document.querySelector('input');
-  app.overlay = document.querySelector('aside');
+  app.overlay = document.querySelector('aside'); 
   app.userScore = document.querySelector('.user-score');
   app.defaultScore = document.querySelector('.default-score');
   app.messagePara = document.querySelector('.message');
@@ -34,9 +34,9 @@ app.cachedSelectors = () => {
 // EVENT LISTENERS
 
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
-app.pageLoadEvent = () => {
+app.eventListeners = () => {
   // puts a random index number in the variable i
-  let i = Math.floor(Math.random()*app.favMovies.length);
+  let i = Math.floor(Math.random() * app.favMovies.length);
   let j = i;
 
   app.startButton.addEventListener('click', function(){
@@ -48,11 +48,19 @@ app.pageLoadEvent = () => {
     // input wouldnt focus without this settimout around it
     app.userInput.value = '';
 
-    //later used to store the ratings for each movie
+    //will store the ratings for each movie/clear the array.
     app.ratings = [];
 
-    const currentMovie = app.getDefaultMovieTitle(j);
+    //scrolls to the proper part of the page
+    const mainTop = document.querySelector('#main').offsetTop;
+    scroll({
+      top: mainTop,
+      behavior: "smooth"
+    });
 
+
+    const currentMovie = app.getDefaultMovieTitle(j);
+    
     // the first time the game starts
     if (i === j) {
       // gets and stores the current default movie choice from our array
@@ -61,7 +69,7 @@ app.pageLoadEvent = () => {
       setTimeout(() => {this.textContent = 'Next round';}, 301);
       j++;
 
-    } else if (i === app.favMovies.length - 1) {
+    } else if (j === app.favMovies.length - 1) {
       // start the array over again
       app.getMovieObject(currentMovie, this.id);
       this.textContent = 'Click to Play again!'
@@ -82,29 +90,15 @@ app.pageLoadEvent = () => {
     }, 301);
     //reveals the form
     setTimeout(() => {app.form.classList.remove('hide');}, 301);
-
-    //scrolls to the proper part of the page
-    const mainTop = document.querySelector('#main').offsetTop;
-
-    scroll({
-      top: mainTop,
-      behavior: "smooth"
-    });
-
   })
-}
 
-// Adds event listener to when SECOND SUBMIT BUTTON is pressed with USER MOVIE INPUT value
-app.userInputEvent = () => {
+  // form submit event listener
 
-  app.form.addEventListener('submit', function(event) {
-    // fade-in animation
-
-
+  app.form.addEventListener('submit', function (event) {
     event.preventDefault();
     // stores the users Movie choice
     const userChoice = app.userInput.value;
-     //calls the getMovieObject, passes it the userChoice and the id of the form
+    //calls the getMovieObject, passes it the userChoice and the id of the form
     app.getMovieObject(userChoice, this.id);
     // add two new buttons for CONFIRM event listener
     // put buttons in <ASIDE>
@@ -122,8 +116,14 @@ app.userInputEvent = () => {
     app.overlay.replaceChildren();
     app.overlay.appendChild(goBackButton);
     app.overlay.appendChild(confirmButton);
-    
+
   })
+}
+
+// Adds event listener to when SECOND SUBMIT BUTTON is pressed with USER MOVIE INPUT value
+app.userInputEvent = () => {
+
+
 }
 
 // GET MOVIE TITLE
@@ -194,7 +194,7 @@ app.printMovieContent = (posterContent, buttonId, imdbRating) => {
 
     app.confirmMovie(app.ratings);
     // inside that we will likely call a compareMovies function
-    console.log(app.ratings);
+    // console.log(app.ratings);
   }
 }
 
@@ -286,16 +286,18 @@ app.compareMovies = (bothMovieRatings) => {
     app.arrowContainer.innerHTML = '<i class="fas fa-equals win"></i>';
     message.textContent = 'Wouldja look at that!';
   }
-  setTimeout(() => {
-    app.scoreMessage(defaultMovieRating, userMovieRating);
-    app.messagePara.textContent = message.data;
-  }, 1200);
+
+  setTimeout(() => { app.scoreMessage(defaultMovieRating, userMovieRating, message); }, 2000);   
+
 }
 // these are global right now
   //work on trying to append them using less code and not creating these elements in global scope
   // maybe try a loop inside scoreMessage function 
 
-app.scoreMessage = (defaultRating, userRating) => {
+app.scoreMessage = (defaultRating, userRating, message) => {
+
+  app.messagePara.textContent = message.data;
+  app.messagePara.classList.add('fade-in');
   //clears p
   app.userScoreCard.textContent = '';
   app.defaultScoreCard.textContent = '';
@@ -319,6 +321,7 @@ app.resetGame = () => {
   app.form.classList.add('hide');
   app.startButton.classList.remove('hide');
   app.startButton.textContent = 'Next round';
+  app.messagePara.classList.remove('fade-in');
 }
 
 // TWO SCENARIOS
@@ -334,10 +337,6 @@ app.resetGame = () => {
 
 
 app.init();
-
-// target genre:
-  // we want the user to be limited to choosing a film that is the same genre as the default movie. 
-
 
 // STILL LEFT TO DO FOR MVP:
   // STYLE/SIZE POSTER CONTAINER BOXES ACCORDINGLY

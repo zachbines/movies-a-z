@@ -64,11 +64,7 @@ button {
 aside button {
     box-shadow: 0 0 1rem black;
     margin: 1rem;
-    background-color: rgba(0,0,0,0.6);
-}
-
-.fade-out {
-    animation: fadein 300ms ease 1 reverse;
+    /* background-color: rgba(0,0,0,0.6); */
 }
 
 button:hover,
@@ -120,12 +116,12 @@ input {
 }
 
 /* dynamically added */
-.user-window p {
-    margin-top: 20px;
+.message {
+    padding-top: 20px;
     font-size: 5rem;
     font-weight: bold;
     text-align: center;
-    animation: fadein 500ms ease 1;
+    height: 70px;
 }
 
 .user-score {
@@ -133,7 +129,7 @@ input {
 }
 
 aside {
-    height: 100%;
+    /* height: 100%; */
     width: 100%;
     display: flex;
     justify-content: center;
@@ -246,6 +242,14 @@ footer {
     visibility: hidden;
 }
 
+.fade-in {
+    animation: fadein 500ms ease 1;
+}
+
+.fade-out {
+    animation: fadein 300ms ease 1 reverse;
+}
+
 .score {
     font-family: 'Coming Soon', cursive;
     position: absolute;
@@ -281,6 +285,10 @@ footer {
     font-size: 5rem;
     color: white;
     transform: scale(2);
+    position: absolute;
+    top: 45%;
+    left: -36px;
+    color: #b3d4fc;
 }
 
 .win {
@@ -341,3 +349,10 @@ footer {
         transform: scale(2);
     }
 }
+
+/* for media queries.. */
+/* 
+at a certain width, we make a class called mobile which has already been targetted in js. 
+to this targetted class, we add outer html that makes our img clickable (
+
+ */

@@ -16,8 +16,7 @@
         <h2>Instructions:</h2>
         <p>Welcome to Movies A to Z! The game is simple. We will pick a movie and your job is to search for a movie that you think is better than ours. When you're ready, just click on the button. Have fun!</p>
       </section>
-    </header>
-    
+    </header> 
     <main id="main">
       <div class="user-window">
         <!-- <div class="user-score">User Score: 0</div> -->
@@ -28,7 +27,8 @@
         </aside>
         <button class="start-button" id="start-button">Click to get started</button>
         <form action="" class="hide" id="user-input">
-          <input type="text" placeholder="Name a BETTER movie!" required>
+          <label for="user-choice" class="sr-only">Name a better movie: </label>
+          <input type="text" placeholder="Name a BETTER movie!" id="user-choice" required>
           <button type="submit">GO</button>
         </form>
         <p class="message"></p>
@@ -46,12 +46,11 @@
         <!-- defualt movie content goes here -->
         </section>
       </div>
-
     </main>
+    <footer>
+      <p>Made at Juno College 2021</p>
+    </footer>
   </div>
-  <footer>
-    <p>Made at Juno College 2021</p>
-  </footer>
   <script src="./script.js"></script>
 </body>
 </html>
