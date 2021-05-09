@@ -21,11 +21,11 @@ html {
 }
 
 body {
-    font-size: 3rem;
+    font-size: 2rem;
     color: white;
     font-family: 'Barlow', sans-serif;
     background-color: black;
-    /* background-image: url(./assets/movie-theatre\ background.jpg); */
+    background-image: url(./assets/red-seats.webp);
     background-size: cover;
 }
 
@@ -37,8 +37,13 @@ body {
 
 h1 {
     font-family: 'Cinzel', serif;
-    font-size: 8rem;
+    font-size: 5rem;
     margin: 2rem 0;
+}
+
+h2 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
 }
 
 .name {
@@ -51,7 +56,7 @@ button {
     border-radius: 10px;
     background-color: transparent;
     color: white;
-    margin: 20px 0;
+    margin-top: 5px;
     padding: 1.5rem 3rem;
     transition: all 200ms ease;
 }
@@ -75,9 +80,8 @@ main {
 }
 
 header {
-    background-color: rgba(66, 108, 98, 0.7);
     border-radius: 30px;
-    padding: 1rem 5rem 5rem 5rem;
+    padding: 0 5rem;
     margin-top: 2rem;
 }
 
@@ -85,7 +89,6 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 3rem;
     animation: fadein 300ms ease 1;
 }
 
@@ -152,56 +155,69 @@ input {
 
 .game-window {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    /* align-items: center; */
 }
 
 .movie {
     margin: 20px;
-    width: calc(50% - 40px);
+    width: calc(50% - 80px);
     position: relative;
 }
 
 .question-mark {
     font-family: 'Lora', serif;
-    font-size: 40rem;
+    font-size: 30rem;
     display: flex;
     justify-content: center;
     align-items: center;
     animation: fadein 3s ease 1;
+    margin-top: 100px;
 }
 
 .img-container {
-    position: relative;
-    border: 10px dotted goldenrod;
+    /* border: 10px dotted goldenrod; */
     z-index: -1;
-    height: 600px;
+    /* height: 700px; */
     animation: fadein 1s ease 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .img-container img {
-    /* border: 10px dotted goldenrod; */
+    border: 10px dotted goldenrod;
     max-height: 100%;
-    margin: 0 auto;
-    height: 100%;
-    max-width: 100%;
+    /* height: 100%; */
+    width: 100%;
+    max-width: 480px;
     object-fit: contain;
-    display: block;   
+}
+
+.info-container {
+    background-color: rgba(33, 33, 33, 0.6);
+    border-radius: 10px;
+    padding: 0.5rem 3rem 2rem 3rem;
+    margin-top: 1rem;
+    /* max-width: 480px; */
 }
 
 .info-container p:nth-of-type(1) ,
 .info-container h3 {
     display: inline-block;
     margin: 2rem 0; 
+    font-size: 2rem;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 
 .info-container p:nth-of-type(1){
     float: right;
     font-style: italic;
-    font-size: 2.5rem;
 }
 
 .info-container p:nth-of-type(2){
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     line-height: 3.5rem;
 }
 
@@ -237,12 +253,12 @@ footer {
 .score {
     font-family: 'Coming Soon', cursive;
     position: absolute;
-    font-size: 10rem;
+    font-size: 7rem;
     color: black;
     left: 25%;
     bottom: 60%;
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     text-align: center;
     background-color: orange;
     border-radius: 50%;
@@ -266,7 +282,7 @@ footer {
 
 .fa-greater-than,
 .fa-equals {
-    font-size: 10rem;
+    font-size: 5rem;
     color: white;
     transform: scale(2);
     position: absolute;
