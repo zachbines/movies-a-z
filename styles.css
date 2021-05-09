@@ -160,6 +160,7 @@ input {
 .game-window {
     display: flex;
     justify-content: space-between;
+    /* align-items: center; */
 }
 
 .movie {
@@ -175,12 +176,13 @@ input {
     justify-content: center;
     align-items: center;
     animation: fadein 3s ease 1;
+    margin-top: 100px;
 }
 
 .img-container {
     /* border: 10px dotted goldenrod; */
     z-index: -1;
-    height: 700px;
+    /* height: 700px; */
     animation: fadein 1s ease 1;
     display: flex;
     justify-content: center;
