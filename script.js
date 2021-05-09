@@ -259,7 +259,7 @@ app.compareMovies = (bothMovieRatings) => {
 
   if (defaultMovieRating < userMovieRating) {
     console.log('User wins');
-    app.arrowContainer.innerHTML = '<i class="fas fa-greater-than win">YEP</i> ';
+    app.arrowContainer.innerHTML = '<i class="fas fa-greater-than win"></i> ';
     
   } else if (defaultMovieRating > userMovieRating) {
     console.log('We win'); 
