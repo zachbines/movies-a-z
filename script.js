@@ -24,6 +24,7 @@ app.cachedSelectors = () => {
   app.overlay = document.querySelector('aside');
   app.userScore = document.querySelector('.user-score');
   app.defaultScore = document.querySelector('.default-score');
+  app.messagePara = document.querySelector('.message');
   app.arrowContainer = document.querySelector('.arrow-container');
   //created p's for the score cards
   app.userScoreCard = document.createElement('p');
@@ -42,6 +43,7 @@ app.pageLoadEvent = () => {
     // these lines ensure the default movie section and the scores reset after the 'next round' button is clicked
     app.arrowContainer.replaceChildren();
     app.defaultMovieSelection.replaceChildren();
+    app.messagePara.textContent = '';
     setTimeout(() => { app.userInput.focus(); }, 1); 
     // input wouldnt focus without this settimout around it
     app.userInput.value = '';
@@ -58,11 +60,13 @@ app.pageLoadEvent = () => {
       app.getMovieObject(currentMovie, this.id);
       setTimeout(() => {this.textContent = 'Next round';}, 301);
       j++;
+
     } else if (i === app.favMovies.length - 1) {
       // start the array over again
       app.getMovieObject(currentMovie, this.id);
       this.textContent = 'Click to Play again!'
       j = 0;
+      
     } else {
       setTimeout(() => {this.textContent = 'Next round';}, 301);
       app.userInput.placeholder = `OK how bout this one? ⤵`;
@@ -78,6 +82,15 @@ app.pageLoadEvent = () => {
     }, 301);
     //reveals the form
     setTimeout(() => {app.form.classList.remove('hide');}, 301);
+
+    //scrolls to the proper part of the page
+    const mainTop = document.querySelector('#main').offsetTop;
+
+    scroll({
+      top: mainTop,
+      behavior: "smooth"
+    });
+
   })
 }
 
@@ -253,23 +266,30 @@ app.confirmMovie = (bothMovieRatings) => {
 app.compareMovies = (bothMovieRatings) => {
   const defaultMovieRating = parseFloat(bothMovieRatings[0][1]).toFixed(1);
   const userMovieRating = parseFloat(bothMovieRatings[1][1]).toFixed(1);
-
-  
-  setTimeout(() => { app.scoreMessage(defaultMovieRating, userMovieRating); }, 1200);
+  const message = document.createTextNode("");
+  console.log(message);
 
   if (defaultMovieRating < userMovieRating) {
-    console.log('User wins');
-    app.arrowContainer.innerHTML = '<i class="fas fa-greater-than win"></i> ';
+    app.arrowContainer.innerHTML = `
+    <i class="fas fa-greater-than win"></i>`;
+    message.textContent = 'Nice One!';
     
   } else if (defaultMovieRating > userMovieRating) {
     console.log('We win'); 
     // app.scoreMessage(defaultMovieRating, userMovieRating); 
-    app.arrowContainer.innerHTML = '<i class="fas fa-greater-than lose"></i> ';
+    app.arrowContainer.innerHTML = `
+    <i class="fas fa-greater-than lose"></i>`;
+    message.textContent = 'Not Quite!';
 
   } else if (defaultMovieRating === userMovieRating) {
     console.log('Would you look at that');
     app.arrowContainer.innerHTML = '<i class="fas fa-equals win"></i>';
+    message.textContent = 'Wouldja look at that!';
   }
+  setTimeout(() => {
+    app.scoreMessage(defaultMovieRating, userMovieRating);
+    app.messagePara.textContent = message.data;
+  }, 1200);
 }
 // these are global right now
   //work on trying to append them using less code and not creating these elements in global scope
