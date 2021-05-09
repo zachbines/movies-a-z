@@ -58,11 +58,13 @@ app.pageLoadEvent = () => {
       app.getMovieObject(currentMovie, this.id);
       setTimeout(() => {this.textContent = 'Next round';}, 301);
       j++;
+
     } else if (i === app.favMovies.length - 1) {
       // start the array over again
       app.getMovieObject(currentMovie, this.id);
       this.textContent = 'Click to Play again!'
       j = 0;
+      
     } else {
       setTimeout(() => {this.textContent = 'Next round';}, 301);
       app.userInput.placeholder = `OK how bout this one? ⤵`;
@@ -78,6 +80,15 @@ app.pageLoadEvent = () => {
     }, 301);
     //reveals the form
     setTimeout(() => {app.form.classList.remove('hide');}, 301);
+
+    //scrolls to the proper part of the page
+    const mainTop = document.querySelector('#main').offsetTop;
+
+    scroll({
+      top: mainTop,
+      behavior: "smooth"
+    });
+
   })
 }
 
@@ -259,7 +270,7 @@ app.compareMovies = (bothMovieRatings) => {
 
   if (defaultMovieRating < userMovieRating) {
     console.log('User wins');
-    app.arrowContainer.innerHTML = '<i class="fas fa-greater-than win">YEP</i> ';
+    app.arrowContainer.innerHTML = '<p>You Got IT!</p><i class="fas fa-greater-than win"></i> ';
     
   } else if (defaultMovieRating > userMovieRating) {
     console.log('We win'); 
