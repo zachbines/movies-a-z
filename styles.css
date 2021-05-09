@@ -51,7 +51,6 @@ h2 {
     font-size: 4rem;
 }
 
-
 aside button {
     box-shadow: 0 0 1rem black;
     margin: 1rem;
@@ -79,8 +78,9 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    animation: fadein 300ms ease 1;
+    animation: fadein 1s ease 1;
 }
+
 
 button,
 input {
@@ -98,6 +98,10 @@ button {
 }
 
 input {
+    background-color: transparent;
+    border-radius: 10px;
+    color: white;
+    border: 3px solid skyblue;
     padding: 1rem 2rem;
     margin: 2rem 4rem;
     border: 2px solid skyblue;
@@ -107,8 +111,12 @@ input::placeholder {
     opacity: 0.8;
 }
 
+input::placeholder {
+    opacity: 0.8;
+}
+
 .user-window {
-    height: 250px;
+    height: 175px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -116,14 +124,7 @@ input::placeholder {
     align-items: center;
 }
 
-/* dynamically added */
-.message {
-    padding-top: 20px;
-    font-size: 5rem;
-    font-weight: bold;
-    text-align: center;
-    height: 70px;
-}
+
 
 .user-score {
     float: left;
@@ -143,6 +144,7 @@ aside {
     line-height: 4rem;
     letter-spacing: 1.5px;
 }
+
 
 .hide-instructions {
     border: none;
@@ -164,31 +166,54 @@ aside {
     position: relative;
 }
 
-.question-mark {
-    font-family: 'Lora', serif;
-    font-size: 30rem;
-    text-shadow: 10px 10px 10px black, -3px 0 10px black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
-    animation: fadein 3s ease 1;
-}
-
 .img-container {
     min-width: 14rem;
     display: flex;
     justify-content: center;
     align-items: center;
     animation: fadein 1s ease 1;
+    position: relative;
 }
 
 .img-container img {
-    border: 10px dotted goldenrod;
+    border: 15px dotted rgb(241, 199, 93);
     max-height: 100%;
     width: 100%;
     max-width: 480px;
     object-fit: contain;
+}
+
+.img-container:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -10;
+    width: 102%;
+    height: 102%;
+    max-width: 480px;
+    background-color: crimson;
+    border-radius: 10px;
+    z-index: -1;
+    outline: 5px solid darkred;
+    box-shadow: 10px 10px 10px black;
+}
+
+.question-mark.img-container {
+    /* position: relative; */
+    border: 0;
+    /* z-index: -1; */
+    font-family: 'Lora', serif;
+    font-size: 30rem;
+    text-shadow: 10px 10px 10px black, -3px 0 10px black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 130px;
+    animation: fadein 5s ease 1;
+}
+
+.question-mark.img-container:before {
+    content: none;
 }
 
 .info-container {
@@ -196,7 +221,8 @@ aside {
     background-color: rgba(33, 33, 33, 0.6);
     border-radius: 10px;
     padding: 0.5rem 3rem 2rem 3rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
+    width: 100%;
 }
 
 .info-container p:nth-of-type(1),
@@ -222,12 +248,26 @@ aside {
     width: 60%;
 }
 
+.message-container {
+    margin-bottom: 20px;
+}
+
+/* dynamically added */
+
+.message {
+    padding-bottom: 30px;
+    font-size: 5rem;
+    font-weight: bold;
+    text-align: center;
+    height: 70px;
+}
+
 footer {
     height: 10vh;
     display:flex;
     justify-content: center;
     align-items: flex-end;
-    padding: 5px;
+    padding: 10px;
 }
 
 /* for js purposes */
@@ -244,7 +284,7 @@ footer {
 }
 
 .fade-out {
-    animation: fadein 300ms ease 1 reverse;
+    animation: fadein 1s ease 1 reverse;
 }
 
 .score {
