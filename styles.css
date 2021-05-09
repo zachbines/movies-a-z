@@ -113,7 +113,6 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid yellow; */
 }
 
 .user-score {
@@ -154,25 +153,6 @@ input {
     margin: 20px;
     width: calc(50% - 40px);
     position: relative;
-}
-
-.greaterThanContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 600px;
-    animation-name: scoreAnimation;
-    animation-duration: 3s;
-}
-
-.fas {
-    font-size: 10rem;
-    /* border: 1px solid white; */
-    color: white;
-}
-
-.fas:hover {
-    transform: rotate(180deg);
 }
 
 .question-mark {
@@ -237,6 +217,10 @@ footer {
     display: none;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 .score {
     font-family: 'Coming Soon', cursive;
     position: absolute;
@@ -252,23 +236,51 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+
     animation: flip 2s ease 1;
     transform: rotateZ(-20deg);
+}
+
+/* regarding the spinning greater than arrow */
+.arrow-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 600px;
+
+}
+
+.fa-greater-than,
+.fa-equals {
+    font-size: 10rem;
+    color: white;
+    transform: scale(2);
+}
+
+.win {
+    animation: greaterthan 3s cubic-bezier(.17,.67,.02,1.12) 1;
+}
+
+.lose {
+    animation: lessthan 3s cubic-bezier(.17,.67,.02,1.12) 1;
+    rotate: 180deg;
 }
 
 @keyframes fadein {
     0% {
         opacity: 0;
+        transform: scale(1);
     }
 
     100% {
         opacity: 1;
+        
     }
 }
 
 @keyframes flip {
     0% {
-        transform: rotateX(-90deg) scale(1);
+        transform: rotateX(-90deg) scale(0);
     }
 
     80% {
@@ -277,5 +289,29 @@ footer {
 
     100% {
         transform: rotateX(0deg) scale(1) rotateZ(-20deg);
+    }
+}
+
+@keyframes greaterthan {
+    0% {
+        transform: rotateZ(0deg) scale(0);
+    }
+
+
+    100% {
+        transform: rotateZ(2880deg) scale(2);   
+    }
+}
+
+@keyframes lessthan {
+
+    0% {
+        rotate: 0deg;
+        transform: scale(0);
+    }
+
+    100% {
+        rotate: 3060deg;
+        transform: scale(2);
     }
 }
