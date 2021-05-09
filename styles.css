@@ -144,6 +144,14 @@ aside {
     letter-spacing: 1.5px;
 }
 
+#hide-instructions {
+    border: none;
+    font-family: 'Coming Soon', cursive;
+    background: chocolate;
+    padding: 0.5rem;
+    text-transform: uppercase;
+}
+
 .game-window {
     display: flex;
     justify-content: space-between;
@@ -193,7 +201,7 @@ aside {
     margin-top: 1rem;
 }
 
-.info-container p:nth-of-type(1) ,
+.info-container p:nth-of-type(1),
 .info-container h3 {
     display: inline-block;
     margin: 2rem 0; 
@@ -394,8 +402,44 @@ to this targetted class, we add outer html that makes our img clickable (
         padding: 1rem 1rem;
     }
 
+    .user-window {
+        height: 150px;
+    }
+
     .question-mark {
         font-size: 20rem;
+    }
+
+    .message {
+        font-size: 3.5rem;
+    }
+
+    .score {
+        font-size: 3rem;
+        width: 100px;
+        height: 100px;
+        top: 0%;
+        left: 30%;
+    }
+
+    .info-container p:nth-of-type(1),
+    .info-container h3 {
+        font-size: 1.8rem;
+    }
+
+    .info-container p:nth-of-type(2){
+        font-size: 1.4rem;
+        line-height: 2.5rem;
+    }
+
+
+    .arrow-container {
+        height: 400px;
+    }
+
+    .fa-greater-than,
+    .fa-equals {
+        font-size: 3.5rem;
     }
 
 }
