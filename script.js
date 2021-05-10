@@ -28,6 +28,7 @@ app.cachedSelectors = () => {
   app.defaultScore = document.querySelector('.default-score');
   app.messagePara = document.querySelector('.message');
   app.arrowContainer = document.querySelector('.arrow-container');
+  app.posterButton = document.querySelector('.buttonPoster');
   //created p's for the score cards
   app.userScoreCard = document.createElement('p');
   app.defaultScoreCard = document.createElement('p');
@@ -38,11 +39,7 @@ app.cachedSelectors = () => {
 
 // Adds event listener to FIRST SUBMIT BUTTON when page first loads
 app.eventListeners = () => {
-  // puts a random index number in the variable i
-  let i = Math.floor(Math.random() * (app.favMovies.length - 1));
-  let j = i;
-
-
+//event listener for hide instructions button
   app.hideInstructionsButton.addEventListener('click', function(){
     
     if (this.textContent === 'Hide ↑') {
@@ -53,8 +50,12 @@ app.eventListeners = () => {
       app.instructions.classList.remove('hide');
     }
   })
+
+  // puts a random index number in the variable i
+  let i = Math.floor(Math.random() * (app.favMovies.length - 1));
+  let j = i;
+
   app.startButton.classList.remove('hide');
-  
   app.startButton.addEventListener('click', function(){
     // these lines ensure the default movie section and the scores reset after the 'next round' button is clicked
     app.arrowContainer.replaceChildren();
@@ -230,6 +231,7 @@ app.makeMovieContent = (currentMovieObj) => {
   const infoContainer = document.createElement('div');
   infoContainer.setAttribute('class', 'info-container');
   infoContainer.innerHTML = `<h3>${Title}</h3> <p>${Year}</p><p>${Plot}</p>`;
+  console.log(infoContainer);
   
   // storing all this generated info in an array, and returning it to the print function
   const movieContentObject = {
