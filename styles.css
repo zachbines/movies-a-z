@@ -264,6 +264,18 @@ footer {
     align-items: center;
 }
 
+a {
+    color: white;
+    text-decoration: none;
+    transition: all 200ms ease;
+}
+
+a:hover,
+a:focus {
+    color: gold;
+    font-size: 1.8rem;
+}
+
 /* for js purposes */
 .hide {
     display: none;
@@ -461,16 +473,10 @@ to this targetted class, we add outer html that makes our img clickable (
         border: 10px dotted rgb(241,199,93);
     }
 
-    .info-container p:nth-of-type(1),
-    .info-container h3 {
+    .info-container {
         font-size: 1.8rem;
-    }
-
-    .info-container p:nth-of-type(2){
-        font-size: 1.6rem;
         line-height: 2.5rem;
     }
-
 
     .arrow-container {
         height: 570px;
@@ -536,6 +542,7 @@ to this targetted class, we add outer html that makes our img clickable (
 }
 
 @media only screen and (max-width: 630px) {
+    
     input {
         border: 2px solid rgb(91, 80, 125);
         padding: 8px 1px;
