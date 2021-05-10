@@ -163,7 +163,7 @@ aside {
 }
 
 .img-container {
-    min-width: 14rem;
+    min-width: 12rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -210,7 +210,7 @@ aside {
 }
 
 .info-container {
-    min-width: 14rem;
+    min-width: 13rem;
     background-color: rgba(33, 33, 33, 0.6);
     border-radius: 10px;
     padding: 0.5rem 3rem 2rem 3rem;
@@ -256,11 +256,12 @@ aside {
 }
 
 footer {
+    font-size: 1.6rem;
     height: 10vh;
     display:flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: flex-end;
-    padding: 10px;
+    align-items: center;
 }
 
 /* for js purposes */
@@ -401,9 +402,6 @@ to this targetted class, we add outer html that makes our img clickable (
 /* @media only screen and (min-width: 1200px) {...}  */
 
 @media only screen and (max-width: 1050px){
-    body {
-        font-size: 1.5rem;
-    }
 
     h1 {
         font-size: 4rem;
@@ -469,7 +467,7 @@ to this targetted class, we add outer html that makes our img clickable (
     }
 
     .info-container p:nth-of-type(2){
-        font-size: 1.4rem;
+        font-size: 1.6rem;
         line-height: 2.5rem;
     }
 
@@ -482,7 +480,7 @@ to this targetted class, we add outer html that makes our img clickable (
     .fa-equals {
         font-size: 3.5rem;
     }
-}
+
 
 @media only screen and (max-width: 900px) {
     .arrow-container {
@@ -491,6 +489,10 @@ to this targetted class, we add outer html that makes our img clickable (
 }
 
 @media only screen and (max-width: 750px){
+
+    header {
+        padding: 0 1rem;
+    }
     h1 {
         font-size: 3rem;
     }
@@ -510,7 +512,7 @@ to this targetted class, we add outer html that makes our img clickable (
     
     button {
         border: 5px solid rgba(63, 191, 123, 1);
-        padding: 1rem 1rem;
+        padding: 1rem 1.5rem;
     }
 
     .question-mark {
@@ -574,6 +576,7 @@ to this targetted class, we add outer html that makes our img clickable (
 @media only screen and (max-width: 520px) {
 
     .question-mark {
+        margin-top: 50px;
         font-size: 10rem;
     }
 
@@ -582,7 +585,7 @@ to this targetted class, we add outer html that makes our img clickable (
     }
 
     .arrow-container {
-        height: 270px;
+        height: 234px;
     }
 
     .fa-greater-than,
@@ -590,4 +593,18 @@ to this targetted class, we add outer html that makes our img clickable (
         font-size: 2.5rem;
     }
 
+    .game-window {
+        justify-content: center;
+    }
+
+    .fa-greater-than,
+    .fa-equals {
+        position: absolute;
+        left: -7px;
+        z-index: 100;
+    }
+
+    .info-container {
+        padding: 0.5rem 1rem 2rem;
+    }
 }
