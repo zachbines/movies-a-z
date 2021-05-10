@@ -480,7 +480,7 @@ to this targetted class, we add outer html that makes our img clickable (
     .fa-equals {
         font-size: 3.5rem;
     }
-
+}
 
 @media only screen and (max-width: 900px) {
     .arrow-container {
@@ -573,8 +573,7 @@ to this targetted class, we add outer html that makes our img clickable (
 }
 
 
-@media only screen and (max-width: 520px) {
-
+@media only screen and (max-width: 520px){
     .question-mark {
         margin-top: 50px;
         font-size: 10rem;
