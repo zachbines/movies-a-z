@@ -274,7 +274,7 @@ a:focus {
 }
 
 .fade-out {
-    animation: fadein 1s ease 1 reverse;
+    animation: fadeout 1s ease 1;
 }
 
 .score {
@@ -323,15 +323,25 @@ a:focus {
     rotate: 180deg;
 }
 
+@keyframes fadeout {
+     0% {
+        opacity: 1;
+        /* transform: scale(1); */
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
 @keyframes fadein {
     0% {
         opacity: 0;
-        transform: scale(1);
+        /* transform: scale(1); */
     }
 
     100% {
         opacity: 1;
-        
     }
 }
 
@@ -457,25 +467,11 @@ to this targetted class, we add outer html that makes our img clickable (
         border: 10px dotted rgb(241,199,93);
     }
 
-<<<<<<< HEAD
     .info-container {
         font-size: 1.8rem;
         line-height: 2.5rem;
     }
 
-=======
-    .info-container p,
-    .info-container h3 {
-        font-size: 1.8rem;
-    }
-
-
-    .info-container p:nth-of-type(2){
-        font-size: 1.6rem;
-        line-height: 2.5rem;
-    }
-  
->>>>>>> beaf541b77c901b8714761deff7d742074b0478b
     .arrow-container {
         height: 570px;
     }
@@ -551,7 +547,7 @@ to this targetted class, we add outer html that makes our img clickable (
 
     button {
         border: 3px solid rgb(241, 199, 93);
-        padding: 1rem 1rem;
+    
     }
 
     .question-mark {
@@ -592,7 +588,7 @@ to this targetted class, we add outer html that makes our img clickable (
     }
 
     .arrow-container {
-        height: 234px;
+        height: 210px;
     }
 
     .fa-greater-than,

@@ -1,16 +1,12 @@
 const app = {}; 
 
-// Create init function/call at the bottom of the page.
 app.init = () => {
-  console.log("this is the init function")
-  //add event listeners in fuctions (maybe we will eventually put them all into one function)
   app.cachedSelectors();
   app.eventListeners();
   app.getDefaultMovieTitle();
 }
 
 // Cache existing html selectors we will need for appending
-
 app.cachedSelectors = () => {
   app.favMovies = ["Teen Wolf", "Fateful Findings", "The Lighthouse", "Oldboy", "Harold and Maude", "Sicario", "The Room", "Hot Fuzz", "The Big Lebowski", "No Country For Old Men", "Alien", "The Bourne Identity", "Beetlejuice", "The Social Network", "Willy Wonka", "Heat", "Dirty Dancing", "The Raid: Redemption", "Scott Pilgrim", "Kiki's Delivery Service", "When Harry Met Sally", "Spaceballs", "The Notebook", "Dumb and Dumber", "Ferris Bueller's Day Off", "Face/Off"];
 
@@ -34,11 +30,9 @@ app.cachedSelectors = () => {
   app.defaultScoreCard = document.createElement('p');
 }
 
-
-// EVENT LISTENERS
-
-// Adds event listener to FIRST SUBMIT BUTTON when page first loads
+// event listeners
 app.eventListeners = () => {
+
 //event listener for hide instructions button
   app.hideInstructionsButton.addEventListener('click', function(){
     
@@ -54,16 +48,15 @@ app.eventListeners = () => {
   // puts a random index number in the variable i
   let i = Math.floor(Math.random() * (app.favMovies.length - 1));
   let j = i;
-
+  // ensures the startButton/playAgain button will be visible
   app.startButton.classList.remove('hide');
   app.startButton.addEventListener('click', function(){
+
     // these lines ensure the default movie section and the scores reset after the 'next round' button is clicked
     app.arrowContainer.replaceChildren();
     app.defaultMovieSelection.replaceChildren();
     app.messagePara.textContent = '';
-    // input wouldnt focus without this setTimout around it
-    setTimeout(() => { app.userInput.focus(); }, 10); 
-
+    // clears the user input
     app.userInput.value = '';
 
     //will store the ratings for each movie/clear the array.
@@ -77,42 +70,40 @@ app.eventListeners = () => {
     });
     
     const currentMovie = app.getDefaultMovieTitle(j);
-    console.log(j);
     // the first time the game starts
     if (i === j) {
-      // gets and stores the current default movie choice from our array
+      // j gets and stores the current default movie choice from our array
       //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
       setTimeout(() => {this.textContent = 'Next round';}, 301);
       j++;
 
     } else if (j === app.favMovies.length - 1) {
-      // start the array over again
+      // if it hits the end of the movie array, start the array over again
       app.getMovieObject(currentMovie, this.id);
       this.textContent = 'Click to Play again!'
       j = 0;
       
     } else {
+      //for every other index
       setTimeout(() => {this.textContent = 'Next round';}, 301);
       app.userInput.placeholder = `OK how bout this one? ⤵`;
-      //calls the getMovieObject, passes it the currentMovie and the id of the startButton
       app.getMovieObject(currentMovie, this.id);
       j++;
     }
-
+    
     // hides button upon game initiation
     this.classList.add('fade-out');
-
     setTimeout(() => {
       this.classList.remove('fade-out');
       this.classList.add('hide');
     }, 301);
+
     //reveals the form
     setTimeout(() => {app.form.classList.remove('hide');}, 301);
   })
 
   // form submit event listener
-
   app.form.addEventListener('submit', function (event) {
     event.preventDefault();
     // stores the users Movie choice
@@ -132,6 +123,7 @@ app.eventListeners = () => {
     confirmButton.textContent = 'Confirm';
     confirmButton.id = 'confirm';
 
+    // ensures they dont append one after another
     app.overlay.replaceChildren();
     app.overlay.appendChild(goBackButton);
     app.overlay.appendChild(confirmButton);
@@ -139,15 +131,45 @@ app.eventListeners = () => {
   })
 }
 
-// GET MOVIE TITLE
-// THIS FUNCTION RETURNS THE MOVIES FROM ARRAY
+// event listener for confirm/go-back buttons
+app.confirmMovie = (bothMovieRatings) => {
+  // showing the buttons
+  app.overlay.classList.remove('hide');
+  // focussing on confirm for quick play
+  app.overlay.childNodes[1].focus();
+  app.form.classList.add('hide');
+
+  app.overlay.addEventListener('click', function (event) {
+    // storing the button clicked
+    const button = event.target;
+
+    if (button.id === 'go-back') {
+      // this removes button duplicates from populating
+      app.overlay.replaceChildren();
+      //bringing back the form
+      app.overlay.classList.add('hide');
+      app.form.classList.remove('hide');
+      app.userInput.value = '';
+      console.log('user went back');
+      // this prevents array from having more than one user rating at a time if they change their minds
+      bothMovieRatings.pop();
+    } else if (button.id === 'confirm') {
+      //call app.compareMovies() function and pass it bothMovieRatings to compare them
+      app.compareMovies(bothMovieRatings);
+      app.resetGame();
+    }
+  })
+}
+
+//return movie title
+//this funtion returns the movies from the array
 app.getDefaultMovieTitle = (title) => {
   const currentMovieTitle = app.favMovies[title];
   return currentMovieTitle;
 }
 
-// (2) GET MOVIE INFO API Call
-// these two parameters represent the title of the movie, and the id of which button triggered the API call
+//get movie object API call
+// these two parameters represent the title of the movie, and the id of which button triggered the API call: the form submit or the startButton
 app.getMovieObject = (title, buttonId) => {
   const url = new URL('http://www.omdbapi.com/');
   const key = 'ba8abefc';
@@ -163,35 +185,38 @@ app.getMovieObject = (title, buttonId) => {
   })
   .then((currentMovieObj) => {
     const { Type, imdbRating, Poster, Plot } = currentMovieObj;
-    // console.log(jsonResult.Genre); 
+    //error handling the user input
     if (currentMovieObj.Genre === "Adult") {
-      console.log('naughty naughty');
+      app.userInput.value = '';
+      app.userInput.placeholder = "naughty naughty";
     } else if (
       Type === "movie" &&
       imdbRating !== "N/A" &&
       Poster !== "N/A" &&
       Plot !== "N/A") {
+
       const movieContent = app.makeMovieContent(currentMovieObj);
-      // THIS IS ADDING THE IMAGE AND INFO CONTAINERS
+      //this is adding the image and info containers
       app.printMovieContent(movieContent, buttonId, currentMovieObj.imdbRating);
-      console.log(currentMovieObj);
+
     } else {
       app.userInput.value = '';
       app.userInput.placeholder = "try somethin else, bub";
     }
   })
 }
+
 //this function appends the movie content to the page. 
 //the parameters represent a new array returned from makeMovieContent(), and the id representing which button triggered this chain of events to ultimately land the movieContent in the right section.
 app.printMovieContent = (posterContent, buttonId, imdbRating) => {
-  // console.log(buttonId);
+  //ensures the user
   app.userMovieSelection.replaceChildren();
   //loops through the movieContentArray and prints the content to the page
   app.ratings.push([buttonId, imdbRating]);
   
   if (buttonId === "start-button") {
     for (let content of posterContent.array) {
-      // these settimouts are to account for API load time.
+      // these settimouts are to make for smoother API load time.
       setTimeout(() => { app.defaultMovieSelection.appendChild(content); }, 200); 
     }
     // the question mark
@@ -209,15 +234,14 @@ app.printMovieContent = (posterContent, buttonId, imdbRating) => {
 
 // THIS FUNCTION RETURNS RESULT FROM app.getMovieInfo and prints POSTER + TEXT elements into NEW POSTER and INFO CONTAINERS
 app.makeMovieContent = (currentMovieObj) => {
-  //destructuring for readability
   const { Title, Year, Plot, Poster } = currentMovieObj;
 
-  // CREATING CONTAINER FOR PLACEHOLDER BOX WITH QUESTION MARK
+  // creating container for placeholder questionmark
   const questionMarkContainer = document.createElement('div');
   questionMarkContainer.classList.add('img-container', 'question-mark')
   questionMarkContainer.textContent = '?';
   
-  // CREATE AND APPEND POSTER CONTAINER
+  //create and append poster container
   const posterContainer = document.createElement('div');
   posterContainer.setAttribute('class', 'img-container')
   
@@ -227,62 +251,25 @@ app.makeMovieContent = (currentMovieObj) => {
   poster.alt = `Official movie poster for ${Title}`;
   posterContainer.appendChild(poster);
   
-  // CREATE AND APPEND TEXT CONTAINER
+  //create and append text container
   const infoContainer = document.createElement('div');
   infoContainer.setAttribute('class', 'info-container');
   infoContainer.innerHTML = `<h3>${Title} (${Year})</h3><p>${Plot}</p>`;
-  console.log(infoContainer);
-  
-  // storing all this generated info in an array, and returning it to the print function
+
+  // storing all this generated info in an object and returning it to the print function
   const movieContentObject = {
     array: [posterContainer, infoContainer],
     empty: questionMarkContainer
   };
   return movieContentObject;
 };
-  
-// event listener for confirm/go-back buttons
-app.confirmMovie = (bothMovieRatings) => {
-  // showing the buttons
-  app.overlay.classList.remove('hide');
-  app.overlay.childNodes[1].focus();
-  app.form.classList.add('hide');
-  console.log('outside of event listener');
-
-  app.overlay.addEventListener('click', function (event) {
-    // console.log(event.target);
-    const button = event.target;
-  
-    if (button.id === 'go-back') {
-      // this removes button duplicates from populating
-      app.overlay.replaceChildren();
-      app.overlay.classList.add('hide');
-      app.form.classList.remove('hide');
-      // app.userMovieSelection.replaceChildren();
-      app.userInput.value = '';
-      console.log('user went back');
-      // this prevents array from having more than one user rating at a time if they change their minds
-      bothMovieRatings.pop();
-    } else if (button.id === 'confirm'){
-      //here is where we would call the app.compareMovies() function, and pass it bothMovieRatings to compare them
-      console.log('again');
-      app.compareMovies(bothMovieRatings);
-      app.resetGame();
-    }
-  })
-}
-
-app.createMessages = (i) => {
-  const winMessage = ["You know your stuff!", "Nice One!", "How did you know?!"];
-  const loseMessage = ["So bad it's good, perhaps?", "Not Quite!", "You have failed us."];
-  return [winMessage[i], loseMessage[i]];
-}
-
+ 
+// this function creates the content for the movie scores/user message
 app.scoreMessage = (defaultRating, userRating, message) => {
-
+  
   app.messagePara.textContent = message.data;
   app.messagePara.classList.add('fade-in');
-  //clears p
+  //clears paragraph for new message
   app.userScoreCard.textContent = '';
   app.defaultScoreCard.textContent = '';
   // user movie score elements
@@ -291,10 +278,16 @@ app.scoreMessage = (defaultRating, userRating, message) => {
   //default movie score elements
   app.defaultScoreCard.classList.add('score');
   app.defaultScoreCard.textContent = defaultRating;
-  // appending both
+  // appending both 
   app.userMovieSelection.appendChild(app.userScoreCard);
   app.defaultMovieSelection.appendChild(app.defaultScoreCard);
-  console.log('scoreMessage function');
+}
+
+//selects possible user messages
+app.createMessages = (i) => {
+  const winMessage = ["You know your stuff!", "Nice One!", "How did you know?!"];
+  const loseMessage = ["So bad it's good, perhaps?", "Not Quite!", "You have failed us."];
+  return [winMessage[i], loseMessage[i]];
 }
 
 app.compareMovies = (bothMovieRatings) => {
@@ -306,20 +299,18 @@ app.compareMovies = (bothMovieRatings) => {
   const messageContent = app.createMessages(i);
   const message = document.createTextNode("");
 
+  //conditional for who wins
   if (defaultMovieRating < userMovieRating) {
     app.arrowContainer.innerHTML = `
     <i class="fas fa-greater-than win"></i>`;
     message.textContent = messageContent[0];
     
-  } else if (defaultMovieRating > userMovieRating) {
-    console.log('We win'); 
-    // app.scoreMessage(defaultMovieRating, userMovieRating); 
+  } else if (defaultMovieRating > userMovieRating) { 
     app.arrowContainer.innerHTML = `
     <i class="fas fa-greater-than lose"></i>`;
     message.textContent = messageContent[1];
 
   } else if (defaultMovieRating === userMovieRating) {
-    console.log('Would you look at that');
     app.arrowContainer.innerHTML = '<i class="fas fa-equals win"></i>';
     message.textContent = 'Wouldja look at that!';
   }
@@ -329,35 +320,18 @@ app.compareMovies = (bothMovieRatings) => {
 }
 
 app.resetGame = () => {
-  console.log('reset function');
+  // empty and hide the confirm/go back section 
   app.overlay.replaceChildren();
   app.overlay.classList.add('hide');
+  //hide the form
   app.form.classList.add('hide');
-  setTimeout(() => { 
+  // to make this button not clickable while scoring happens
+  setTimeout(() => {
     app.startButton.classList.add('fade-in');
-    app.startButton.classList.remove('hide'); 
+    app.startButton.classList.remove('hide');
+    app.startButton.focus();
   }, 3000)
   app.messagePara.classList.remove('fade-in');
 }
 
-// TWO SCENARIOS
-  // (1) USER WINS
-    // Append text on top of userMovie poster
-    // style css to give a celebratory visual cue
-    // Append text that says "YOU WIN"
-  // (2) DEFAULT WINS
-    // Append text to the userMovie poster
-    // style css to get a less celebratory visual cue
-    // Appen text that says "WE WIN"
-  // RAINCLOUD OR SUNSHINE STRETCH GOAL
-
-
 app.init();
-
-// STILL LEFT TO DO FOR MVP:
-  // STYLE/SIZE POSTER CONTAINER BOXES ACCORDINGLY
-  // MAKE APP RESPONSIVE FOR MOBILE (MAYBE making it so that at a certain screen size, when the user clicks the movie, all the info about appears to save space on screen)
-  // make the game restartable
-
-// add class of hide to info container
-// add button "+ click to expand" to unhide info container
