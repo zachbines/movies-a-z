@@ -413,14 +413,6 @@ a:focus {
         letter-spacing: 1px;
     }
 
-    input {
-        border: 3px solid rgb(241, 199, 93);
-    }
-
-    button {
-        border: 3px solid rgb(241, 199, 93);
-    }
-
     .user-window {
         height: 200px;
         margin-top: 1rem;
@@ -516,7 +508,6 @@ a:focus {
 
 @media only screen and (max-width: 630px) {
     input {
-        border: 3px solid rgb(241, 199, 93);
         padding: 8px 1px;
     }
 
