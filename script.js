@@ -320,9 +320,10 @@ app.compareMovies = (bothMovieRatings) => {
 }
 
 app.resetGame = () => {
-  // empty the overlay
+  // empty and hide the confirm/go back section 
   app.overlay.replaceChildren();
   app.overlay.classList.add('hide');
+  //hide the form
   app.form.classList.add('hide');
   // to make this button not clickable while scoring happens
   setTimeout(() => {
