@@ -32,7 +32,6 @@ app.cachedSelectors = () => {
   //created p's for the score cards
   app.userScoreCard = document.createElement('p');
   app.defaultScoreCard = document.createElement('p');
-  // console.log(app.instructionsChildren);
 }
 
 
@@ -225,7 +224,7 @@ app.makeMovieContent = (currentMovieObj) => {
   //creating image for poster content
   const poster = document.createElement('img');
   poster.src = Poster;
-  poster.alt = Title;
+  poster.alt = `Official movie poster for ${Title}`;
   posterContainer.appendChild(poster);
   
   // CREATE AND APPEND TEXT CONTAINER
@@ -241,7 +240,6 @@ app.makeMovieContent = (currentMovieObj) => {
   };
   return movieContentObject;
 };
-  
   
 // event listener for confirm/go-back buttons
 app.confirmMovie = (bothMovieRatings) => {
@@ -360,5 +358,6 @@ app.init();
   // STYLE/SIZE POSTER CONTAINER BOXES ACCORDINGLY
   // MAKE APP RESPONSIVE FOR MOBILE (MAYBE making it so that at a certain screen size, when the user clicks the movie, all the info about appears to save space on screen)
   // make the game restartable
-  // 
 
+// add class of hide to info container
+// add button "+ click to expand" to unhide info container
