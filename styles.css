@@ -119,10 +119,6 @@ input::placeholder {
     align-items: center;
 }
 
-.user-score {
-    float: left;
-}
-
 aside {
     /* height: 100%; */
     width: 100%;
@@ -136,7 +132,7 @@ aside {
     font-weight: 600;
     line-height: 4rem;
     letter-spacing: 1.5px;
-    height: 170px;
+    height: 100%;
 }
 
 
@@ -310,7 +306,7 @@ footer {
     text-align: center;
     flex-direction: column;
     justify-content: center;
-    height: 600px;
+    height: 650px;
     position: relative;
 }
 
@@ -412,7 +408,7 @@ to this targetted class, we add outer html that makes our img clickable (
     h1 {
         font-size: 4rem;
     }
-    
+
     h2 {
         font-size: 2rem;
     }
@@ -425,7 +421,6 @@ to this targetted class, we add outer html that makes our img clickable (
         font-size: 1.5rem;
         line-height: 3rem;
         letter-spacing: 1px;
-        height: 12rem;
     }
 
     input {
@@ -503,10 +498,6 @@ to this targetted class, we add outer html that makes our img clickable (
     .name {
         font-size: 1.8rem;
     }
-
-    .instructions {
-        height: 15rem;
-    }
     
     .hide-instructions {
        padding: 0.8rem 1rem;
@@ -553,10 +544,6 @@ to this targetted class, we add outer html that makes our img clickable (
         padding: 1rem 1rem;
     }
 
-    .instructions {
-        height: 16rem;
-    }
-
     .question-mark {
         font-size: 13rem;
         margin-top: 80px;
@@ -586,10 +573,7 @@ to this targetted class, we add outer html that makes our img clickable (
 }
 
 
-@media only screen and (max-width: 475px) {
-    .instructions {
-        height: 22rem;
-    }
+@media only screen and (max-width: 520px) {
 
     .question-mark {
         font-size: 10rem;
@@ -599,10 +583,13 @@ to this targetted class, we add outer html that makes our img clickable (
         font-size: 2.5rem;
     }
 
+    .arrow-container {
+        height: 270px;
+    }
+
     .fa-greater-than,
     .fa-equals {
         font-size: 2.5rem;
     }
-
 
 }
