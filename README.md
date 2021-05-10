@@ -9,6 +9,8 @@ When the user's movie choice is confirmed, two scores will append to the posters
 
 The website is able to iterate through our curated list in a replayable format so that the user can compare movies as many times as they please.
 
+side note: In the js, we had to use .innerHTML = '' to ensure that containers cleared before they were repopulated AS WELL as recplaceChildren(). We were getting errors on some devices and this seemed to fix it. 
+
 Thank you for taking the time to visit our website and please provide any feedback to the following e-mail if you wish to do so: 
 
 aubrey.j.kazdan@gmail.com
